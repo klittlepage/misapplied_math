@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/klittlepage/ink.git
-  revision: 7f8da410438a3d0528def048be0055306d5f237e
+  revision: 23327946f074fe0b89c426abb288aecacdb2d96e
   specs:
     octopress-ink (1.2.1)
       jekyll (>= 2.0)
