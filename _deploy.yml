@@ -1,11 +1,59 @@
 method: s3
 site_dir: _site
-bucket_name: ENV['AWS_S3_DEPLOYMENT_BUCKET']
-access_key_id: ENV['AWS_ACCESS_KEY']
-secret_access_key: ENV['YOURSECRETKEYGOESHERE']
-distribution_id: ENV['AWS_CLOUDFRONT_DISTRIBUTION']
+bucket_name: <%= ENV['AWS_S3_DEPLOYMENT_BUCKET'] %>
+access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
+secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
 remote_path: /
 region: us-east-1
-verbose: false
+verbose: true
 incremental: false
 delete: false
+headers:
+  - filename: '^(?!.*assets).*\.html$'
+    content_type: 'text/html'
+  - filename: '^(?!.*assets).*\.xml$'
+    content_type: 'application/xml'
+  - filename: '^(?!.*assets).*\.js$'
+    content_type: 'application/javascript'
+  - filename: '^(?!.*assets).*\.css$'
+    content_type: 'text/css'
+  - filename: '^assets.*\.js$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/javascript'
+  - filename: '^assets.*\.css$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'text/css'
+  - filename: '^assets.*\.png$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'image/png'
+  - filename: '^assets.*\.jpg$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'image/jpeg'
+  - filename: '^assets.*\.eot$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/vnd.ms-fontobject'
+  - filename: '^assets.*\.woff$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/font-woff'
+  - filename: '^assets.*\.woff2$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/font-woff2'
+  - filename: '^assets.*\.ttf$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/x-font-truetype'
+  - filename: '^assets.*\.svg$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'image/svg+xml'
+  - filename: '^assets.*\.otf$'
+    expires: '+3 years'
+    cache_control: 'max-age=94608000'
+    content_type: 'application/x-font-opentype'

@@ -18,7 +18,7 @@ url: "https://www.klittlepage.com"
 titlecase: true
 date_format: "ordinal"
 permalink: /:year/:month/:day/:title/
-exclude: ['Gemfile', 'Gemfile.lock']
+exclude: ['Gemfile', 'Gemfile.lock', 'README.md']
 
 twitter_username: kellylittlepage
 github_username:  klittlepage

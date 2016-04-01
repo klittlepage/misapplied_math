@@ -40,6 +40,9 @@ GEM
     addressable (2.3.8)
     autoprefixer-rails (6.3.5)
       execjs
+    aws-sdk-v1 (1.66.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     byebug (8.2.2)
     closure-compiler (1.1.12)
     coderay (1.1.1)
@@ -78,6 +81,9 @@ GEM
       rb-inotify (>= 0.9.7)
     mercenary (0.3.5)
     method_source (0.8.2)
+    mini_portile2 (2.0.0)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
     octopress (3.0.11)
       jekyll (>= 2.0)
       mercenary (~> 0.3.2)
@@ -159,6 +165,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk-v1
+  byebug
   closure-compiler
   dotenv
   jekyll

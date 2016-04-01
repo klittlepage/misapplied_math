@@ -11,6 +11,8 @@ group :development do
   gem 'pygments.rb'
 	gem 'yui-compressor'
 	gem 'closure-compiler'
+  gem 'aws-sdk-v1'
+  gem 'byebug'
 end
 
 group :jekyll_plugins do
