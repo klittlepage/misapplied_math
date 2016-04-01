@@ -53,6 +53,7 @@ GEM
     fastimage (1.9.0)
       addressable (~> 2.3.5)
     ffi (1.9.10)
+    highline (1.7.8)
     jekyll (3.1.2)
       colorator (~> 0.1)
       jekyll-sass-converter (~> 1.0)
@@ -137,6 +138,7 @@ GEM
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.2.0)
     rack (1.6.4)
+    rake (11.1.2)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -169,6 +171,7 @@ DEPENDENCIES
   byebug
   closure-compiler
   dotenv
+  highline
   jekyll
   jekyll-assets
   jekyll-paginate
@@ -186,6 +189,7 @@ DEPENDENCIES
   octopress-quote-tag
   octopress-render-code
   pygments.rb
+  rake
   stringex
   yui-compressor
 

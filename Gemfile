@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.3.0'
  
 group :development do
+  gem 'rake'
 	gem 'jekyll'
 	gem 'jekyll-assets'
   gem 'jekyll-paginate'
@@ -12,6 +13,7 @@ group :development do
 	gem 'yui-compressor'
 	gem 'closure-compiler'
   gem 'aws-sdk-v1'
+  gem 'highline'
   gem 'byebug'
 end
 
