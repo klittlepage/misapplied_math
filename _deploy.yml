@@ -1,0 +1,11 @@
+method: s3
+site_dir: _site
+bucket_name: ENV['AWS_S3_DEPLOYMENT_BUCKET']
+access_key_id: ENV['AWS_ACCESS_KEY']
+secret_access_key: ENV['YOURSECRETKEYGOESHERE']
+distribution_id: ENV['AWS_CLOUDFRONT_DISTRIBUTION']
+remote_path: /
+region: us-east-1
+verbose: false
+incremental: false
+delete: false

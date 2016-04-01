@@ -1,0 +1,518 @@
+---
+layout: post
+title: "Twelve Days 2013: Shunting-Yard Algorithm"
+date: 2013-12-22 22:27
+comments: true
+categories: ['CS']
+keywords: "Shunting-Yard RPN Reverse Polish Notation abstract syntax tree AST parsing LL(1) scripting language design"
+description: "A brief tutorial on using the the Shunting-Yard algorithm to parse a simple grammar and generate an abstract syntax tree."
+---
+
+## Day Eleven: The Shunting-Yard Algorithm
+
+### TL/DR
+
+Parsing is hard. Parser generators such as [ANTLR](http://www.antlr3.org/) make it significantly easier by providing a tool to express complex grammars via [Extended Backus–Naur Form](http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form) (a grammar for defining grammars) and generate parsers automatically. However, that's a pretty heavy weight solution, especially if you just need to do something quick and dirty like implement an expression evaluator. There's a significantly easier means of parsing simple grammars that describe things like mathematical equations called the [Shunting-yard algorithm](http://en.wikipedia.org/wiki/Shunting-yard_algorithm). 
+
+The Shunting-yard algorithm can be extended to handle more complex tasks, but at its core the algorithm parses an expression written in [infix notation](http://en.wikipedia.org/wiki/Infix_notation) and applies the rules of operator precedence with optional parentheses to rewrite the original expression as something unambiguous. You can use it to rewrite the parsed expression in [Reverse Polish Notation](http://en.wikipedia.org/wiki/Reverse_Polish_notation), or to produce an abstract syntax tree (AST). There are lots of examples of the former but I haven't seen to many of the latter. The code below implements both.
+
+## Parsing 101
+
+The simplest end of the parsing spectrum involves something along the lines of taking a CSV file and converting it into a stream of usable values. On the most complex end you have parsers that can read a C++ source file and create a usable representation of it for the compiler. The former definitely doesn't merit anything complicated, the latter requires some of the most powerful tools for language recognition that we have. For "heavy duty parsing" the process usually looks something like: [formal grammar](http://en.wikipedia.org/wiki/Formal_grammar) -> [lexer](http://en.wikipedia.org/wiki/Lexical_analysis) -> [parser](http://en.wikipedia.org/wiki/Parsing) -> [abstract syntax tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree). If you're writing a compiler or something similar, the abstract syntax tree gets used as a unique, structurally validated, and unambiguous input to whatever happens next.
+
+There are very powerful parsers such as [LL(*)](http://en.wikipedia.org/wiki/LL_parser) that are almost impossible to write by hand for any sizable grammar. Thankfully, tools such as ANTLR will write them for us, given a formal description of the language. However this process is fairly heavy weight, and if you're doing something simple like implementing a simple scripting language or an equation evaluator you might be able to get away without it.
+
+## Operators, Precedence, and Associativity
+
+Most of us are used to looking at mathematical equations in infix notation: $3 + 4 \cdot 2 /(1 - 5 )^{2^3}$. Unfortunately, that syntax is very hard for a computer to deal with. We subconsciously recognize the rules of [operator associativity](http://en.wikipedia.org/wiki/Operator_associativity) and [operator precedence](http://en.wikipedia.org/wiki/Order_of_operations) for mathematical equations, and as programmers we have to know about operator precedence for the languages that we work with; we've learned to parse these things with ease so it's easy to overlook how much is actually going on. When you throw in parenthetical grouping, the task at hand is definitely non-trivial.
+
+Alternatives such as Reverse Polish Notation write expressions in a fashion that's unambiguous and denotes order-of-operation without parentheses. However, unless you're really used to working with it (I've seen people beast through computations on RPN calculators like the [HP-48](http://en.wikipedia.org/wiki/HP-48_series)), you'll have to spend some time thinking your way through the expression that you're writing or reading. As such, it's a good thing that languages don't require us to write things that way, but that does leave us with the problem of parsing an expression while taking into account associativity and precedence.
+
+## Using The Shunting-Yard Algorithm
+
+[Dijkstra](http://en.wikipedia.org/wiki/Edsger_Dijkstra) first described the algorithm in 1961 (as if that guy hadn't done enough brilliant work already...). It provides a simple means of converting expressions in infix notation to prefix notation. Most of code that I've seen for it outputs the original expression in RPN but the same procedure can generate an abstract syntax tree as well (in fact, formally speaking RPN is generated by the [post-order traversal](http://en.wikipedia.org/wiki/Tree_traversal#Post-order) of an AST). The algorithm is iterative and runs in $O(n)$ so performance wise it's as good as you can do for a parser. The code below assumes that every operator has two operands -- modifying it to accept unary operators or functions with parameters is quite simple. I also avoided the cruft of refactoring the code into something more OO to keep things short and simple. You would usually want to make the AST nicer to work with, and it's easy to specialize nodes as operators to clean up evaluation.
+
+{% codeblock title:Operator.java lang:java %}
+
+package parsing;
+
+/**
+ * A simple interface common to all operators in a grammar.
+ *
+ * @author Kelly Littlepage
+ */
+public interface Operator {
+
+    /***
+     *
+     * @return <code>true</code> if the operator is right associative, and
+     * <code>false</code> otherwise. By definition, any operator that isn't
+     * right associative is left associative.
+     */
+    boolean isRightAssociative();
+
+    /***
+     * Compares the precedence of this operator against another operator.
+     *
+     * @param o The operator to compare against.
+     *
+     * @return -1 if this operator is of lower precedence, 1 if it's of greater
+     * precedence, and 0 if they're of equal precedence. If two operators are of
+     * equal precedence, right associativity and parenthetical groupings must be
+     * used to determine precedence.
+     */
+    int comparePrecedence(Operator o);
+
+    /***
+     *
+     * @return Gets the symbol used to denote the operator.
+     */
+    char getSymbol();
+
+
+}
+
+
+{% endcodeblock %}
+
+
+{% codeblock title:BaseOperator.java lang:java %}
+
+package parsing;
+
+/**
+ * A simple base implementation of the {@link Operator} interface.
+ *
+ * @author Kelly Littlepage
+ */
+public class BaseOperator implements Operator {
+
+    private final char symbol;
+    private final boolean rightAssociative;
+    private final int precedence;
+
+    /***
+     * Creates a new BaseOperator.
+     *
+     * @param symbol The symbol used to represent the operator.
+     * @param rightAssociative <code>true</code> if the operator is right
+     * associative, and false otherwise.
+     * @param precedence A numerical precedence for the operator relative to
+     * all other operators in use.
+     */
+    public BaseOperator(char symbol, boolean rightAssociative,
+                        int precedence) {
+        this.symbol = symbol;
+        this.rightAssociative = rightAssociative;
+        this.precedence = precedence;
+    }
+
+    @Override
+    public boolean isRightAssociative() {
+        return rightAssociative;
+    }
+
+    @Override
+    public int comparePrecedence(Operator o) {
+        if(o instanceof BaseOperator) {
+            BaseOperator other = (BaseOperator) o;
+            return precedence > other.precedence ? 1 :
+                    other.precedence == precedence ? 0 : -1;
+        } else {
+            // Defer the comparison to the second operator reflectively
+            return -o.comparePrecedence(this);
+        }
+    }
+
+    @Override
+    public char getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(symbol);
+    }
+
+
+}
+
+
+{% endcodeblock %}
+
+
+{% codeblock title:ASTNode.java lang:java %}
+
+package parsing;
+
+/**
+ * A simple AST node class.
+ *
+ * @author Kelly Littlepage
+ */
+public class ASTNode {
+
+    private final char value;
+    private final ASTNode leftASTNode;
+    private final ASTNode rightASTNode;
+
+    /***
+     * Constructs a new AST node. There's no explicit specialization for leaf
+     * nodes. Leaves are denoted by nodes where both the left and right node
+     * is null.
+     *
+     * @param value The value held by the node.
+     * @param leftASTNode The left node, or <code>null</code> if there isn't one.
+     * @param rightASTNode The right node, or <code>null</code> if there isn't one.
+     */
+    public ASTNode(char value, ASTNode leftASTNode, ASTNode rightASTNode) {
+        this.value = value;
+        this.leftASTNode = leftASTNode;
+        this.rightASTNode = rightASTNode;
+    }
+
+    /***
+     *
+     * @return The value held by the node.
+     */
+    public char getValue() {
+        return value;
+    }
+
+    /***
+     *
+     * @return The left node, or <code>null</code> if there isn't one.
+     */
+    public ASTNode getLeftASTNode() {
+        return leftASTNode;
+    }
+
+    /***
+     *
+     * @return The right node, or <code>null</code> if there isn't one.
+     */
+    public ASTNode getRightASTNode() {
+        return rightASTNode;
+    }
+
+
+}
+
+
+{% endcodeblock %}
+
+
+{% codeblock title:ShuntingYardParser.java lang:java %}
+
+package parsing;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+/**
+ * A simple implementation of the Shunting Yard algorithm to parse an
+ * infix expression and generate either an abstract syntax tree or another
+ * expression in Reverse Polish notation. This class duplicates code between
+ * {@link #convertInfixNotationToRPN(String)} and
+ * {@link #convertInfixNotationToAST(String)} as the underlying algorithm is
+ * nearly identical. You can easily yield RPN given an AST via post-order
+ * traversal of the tree.
+ *
+ * Error handling is almost non existent, all operators are taken as single
+ * characters. Both of these issues are easily corrected for.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Shunting-yard_algorithm">
+ *     http://en.wikipedia.org/wiki/Shunting-yard_algorithm</a> for details of
+ *     the algorithm.
+ *
+ * @author Kelly Littlepage
+ */
+public class ShuntingYardParser {
+
+    private final Map<Character, Operator> operators;
+
+    private static void addNode(Stack<ASTNode> stack, char operator) {
+        final ASTNode rightASTNode = stack.pop();
+        final ASTNode leftASTNode = stack.pop();
+        stack.push(new ASTNode(operator, leftASTNode, rightASTNode));
+    }
+
+    /***
+     * Creates a new ShuntingYardParser for the given operators.
+     *
+     * @param operators A collection of operators that should be recognized by
+     * the parser.
+     */
+    public ShuntingYardParser(Collection<Operator> operators) {
+        this.operators = new HashMap<>();
+        for(Operator o : operators) {
+            this.operators.put(o.getSymbol(), o);
+        }
+    }
+
+    /***
+     * Convert an expression in infix notation to an abstract syntax tree.
+     *
+     * @param input The expression, in infix notation.
+     *
+     * @return An {@link ASTNode} that serves as the root of the AST.
+     */
+    public ASTNode convertInfixNotationToAST(final String input) {
+        final Stack<Character> operatorStack = new Stack<>();
+        final Stack<ASTNode> operandStack = new Stack<>();
+        final char[] chars = input.toCharArray();
+        main:
+        for(char c : chars) {
+            char popped;
+            switch(c) {
+                case ' ':
+                    break;
+                case '(':
+                    operatorStack.push('(');
+                    break;
+                case ')':
+                    while(!operatorStack.isEmpty()) {
+                        popped = operatorStack.pop();
+                        if('(' == popped) {
+                            continue main;
+                        } else {
+                            addNode(operandStack, popped);
+                        }
+                    }
+                    throw new IllegalStateException("Unbalanced right " +
+                            "parentheses");
+                default:
+                    if(operators.containsKey(c)) {
+                        final Operator o1 = operators.get(c);
+                        Operator o2;
+                        while(!operatorStack.isEmpty() && null != (o2 =
+                                operators.get(operatorStack.peek()))) {
+                            if((!o1.isRightAssociative() &&
+                                    0 == o1.comparePrecedence(o2)) ||
+                                    o1.comparePrecedence(o2) < 0) {
+                                operatorStack.pop();
+                                addNode(operandStack, o2.getSymbol());
+                            } else {
+                                break;
+                            }
+                        }
+                        operatorStack.push(c);
+                    } else {
+                        operandStack.push(new ASTNode(c, null, null));
+                    }
+                    break;
+            }
+        }
+        while(!operatorStack.isEmpty()) {
+            addNode(operandStack, operatorStack.pop());
+        }
+        return operandStack.pop();
+    }
+
+    /***
+     * Convert an expression in infix notation to an expression in Reverse
+     * Polish Notation.
+     *
+     * @param input The expression, in infix notation.
+     *
+     * @return An expression in Reverse Polish notation.
+     */
+    public String convertInfixNotationToRPN(final String input) {
+        final Stack<Character> operatorStack = new Stack<>();
+        final StringBuilder sb = new StringBuilder();
+        final char[] chars = input.toCharArray();
+        main:
+        for(char c : chars) {
+            char popped;
+            switch(c) {
+                case ' ':
+                    break;
+                case '(':
+                    operatorStack.push('(');
+                    break;
+                case ')':
+                    while(!operatorStack.isEmpty()) {
+                        popped = operatorStack.pop();
+                        if('(' == popped) {
+                            continue main;
+                        } else {
+                            sb.append(" ").append(popped);
+                        }
+                    }
+                    throw new IllegalStateException("Unbalanced right " +
+                            "parentheses");
+                default:
+                    if(operators.containsKey(c)) {
+                        final Operator o1 = operators.get(c);
+                        Operator o2;
+                        while(!operatorStack.isEmpty() && null != (o2 =
+                                operators.get(operatorStack.peek()))) {
+                            if((!o1.isRightAssociative() &&
+                                    0 == o1.comparePrecedence(o2)) ||
+                                    o1.comparePrecedence(o2) < 0) {
+                                operatorStack.pop();
+                                sb.append(" ").append(o2.getSymbol());
+                            } else {
+                                break;
+                            }
+                        }
+                        operatorStack.push(c);
+                    } else {
+                        if(sb.length() > 0) {
+                            sb.append(" ");
+                        }
+                        sb.append(c);
+                    }
+                    break;
+            }
+        }
+        while(!operatorStack.isEmpty()) {
+            sb.append(" ").append(operatorStack.pop());
+        }
+        return sb.toString();
+    }
+
+
+}
+
+
+{% endcodeblock %}
+
+
+{% codeblock title:ShuntingYardDemo.java lang:java %}
+
+package parsing;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Stack;
+
+/**
+ * A simple demonstration of the Shunting-Yard algorithm. It's easy to extend
+ * this code to handle arbitrary operators/functions (including unary ones)
+ * and to validate input.
+ *
+ * @author Kelly Littlepage
+ */
+public class ShuntingYardDemo {
+
+    /***
+     * Evaluates the calculation encoded in the given abstract syntax tree.
+     * This method uses recursion to keep things clean. If you needed to
+     * evaluate a very deep tree you might need to rewrite this method to use
+     * depth first search and evaluate the tree using an explicit stack.
+     *
+     * @param tree The {@link ASTNode} to evaluate.
+     *
+     * @return The result of the computation.
+     */
+    private static double evaluateAST(ASTNode tree) {
+        switch(tree.getValue()) {
+            case '^':
+                return Math.pow(evaluateAST(tree.getLeftASTNode()),
+                        evaluateAST(tree.getRightASTNode()));
+            case '*':
+                return evaluateAST(tree.getLeftASTNode()) * evaluateAST(tree.
+                        getRightASTNode());
+            case '/':
+                return evaluateAST(tree.getLeftASTNode()) / evaluateAST(tree.
+                        getRightASTNode());
+            case '+':
+                return evaluateAST(tree.getLeftASTNode()) + evaluateAST(tree.
+                        getRightASTNode());
+            case '-':
+                return evaluateAST(tree.getLeftASTNode()) - evaluateAST(tree.
+                        getRightASTNode());
+            default:
+                return Double.valueOf(Character.toString(
+                        tree.getValue()));
+        }
+    }
+
+    /***
+     * Evaluates the expression given in Reverse Polish notation.
+     *
+     * @param rpn The expression, in reverse polish notation.
+     *
+     * @return The result of the calculation.
+     */
+    private static double evaluateRPN(String rpn) {
+        final Stack<String> computation = new Stack<>();
+        final char[] chars = rpn.toCharArray();
+        for(char c : chars) {
+            final String v1;
+            final String v2;
+            switch(c) {
+                case '^':
+                    v2 = computation.pop();
+                    v1 = computation.pop();
+                    computation.push(Double.toString(
+                            Math.pow(Double.valueOf(v1), Double.valueOf(v2))));
+                    break;
+                case '*':
+                    v2 = computation.pop();
+                    v1 = computation.pop();
+                    computation.push(Double.toString(
+                            Double.valueOf(v1) * Double.valueOf(v2)));
+                    break;
+                case '/':
+                    v2 = computation.pop();
+                    v1 = computation.pop();
+                    computation.push(Double.toString(
+                            Double.valueOf(v1) / Double.valueOf(v2)));
+                    break;
+                case '+':
+                    v2 = computation.pop();
+                    v1 = computation.pop();
+                    computation.push(Double.toString(
+                            Double.valueOf(v1) + Double.valueOf(v2)));
+                    break;
+                case '-':
+                    v2 = computation.pop();
+                    v1 = computation.pop();
+                    computation.push(Double.toString(
+                            Double.valueOf(v1) - Double.valueOf(v2)));
+                    break;
+                case ' ':
+                    break;
+                default:
+                    computation.push(Character.toString(c));
+            }
+        }
+        return Double.valueOf(computation.pop());
+    }
+
+    /***
+     * A simple demonstration of parsing an infix expression and converting it
+     * to either Reverse Polish Notation or an abstract syntax tree.
+     *
+     */
+    public static void main(String[] args) {
+        // Define our basic operators for arithmetic.
+        final Collection<Operator> operators = new ArrayList<>();
+        operators.add(new BaseOperator('^', true, 4));
+        operators.add(new BaseOperator('*', false, 3));
+        operators.add(new BaseOperator('/', false, 3));
+        operators.add(new BaseOperator('+', false, 2));
+        operators.add(new BaseOperator('-', false, 2));
+
+        final ShuntingYardParser parser = new ShuntingYardParser(operators);
+        final String input = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
+
+        final String rpn = parser.convertInfixNotationToRPN(input);
+        System.out.println("RPN expression: " + rpn);
+
+        final ASTNode parseTree = parser.convertInfixNotationToAST(input);
+        final double result = evaluateAST(parseTree);
+        System.out.println("Result: " + result);
+
+        assert 0 == Double.compare(result, evaluateRPN(rpn));
+    }
+
+
+}
+
+
+{% endcodeblock %}

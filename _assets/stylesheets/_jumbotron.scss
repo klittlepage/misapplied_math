@@ -1,0 +1,44 @@
+$background_image: url(image_path("tokyo-background.jpg"));
+
+.jumbotron {
+	font-weight: normal;
+	background-color: $off_white;
+	padding-left: 0px;
+	text-align: left;
+}
+
+.container .jumbotron {
+	padding-left: 0px;
+}
+
+#misapplied-jumbotron {
+	background: $background_image;
+	font-size: 60px;
+	margin-bottom: 20px;
+	overflow-x: hidden;
+	line-height: 80px;
+}
+
+#misapplied-jumbotron .container {
+	color: $off_white;
+	text-align: center;
+}
+
+#misapplied-jumbotron .tagline {
+	color: $off_white;
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+	.jumbotron {
+		font-size: 40px;
+	}
+
+	#misapplied-jumbotron .container {
+		font-size: 90%;
+	}
+
+	#misapplied-jumbotron .tagline {
+		font-size: 22px;
+	}
+}

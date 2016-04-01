@@ -1,0 +1,8 @@
+.env
+.byebug_history
+_site
+.asset-cache
+.sass-cache
+.jekyll-metadata
+.jekyll-assets-cache
+.code-highlighter-cache

@@ -1,0 +1,8 @@
+soh ::= '0x1'
+char ::= [a-Z]
+ascii_digit ::= [0-9]
+string ::= (char | ascii_digit)*
+value ::= string*
+tag ::= ascii_digit+
+field ::= tag "=" value
+message ::= (field soh)+
