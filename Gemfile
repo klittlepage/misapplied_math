@@ -1,17 +1,17 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+ruby '2.3.1'
  
 group :development do
   gem 'rake'
-	gem 'jekyll'
-	gem 'jekyll-assets'
+  gem 'jekyll'
+  gem 'jekyll-assets'
   gem 'jekyll-paginate'
   gem 'dotenv'
   gem 'stringex'
   gem 'pygments.rb'
-	gem 'yui-compressor'
-	gem 'closure-compiler'
+  gem 'yui-compressor'
+  gem 'closure-compiler'
   gem 'aws-sdk-v1'
   gem 'highline'
   gem 'byebug'
