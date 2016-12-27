@@ -1,0 +1,18 @@
+---
+pageable: true
+per_page: 10
+blog: blog
+layout: site_page
+---
+
+<div class="jumbotron">
+  Category: <%= tagname %>
+</div>
+
+<%= partial('partials/article_list_generator', locals: { page_articles: page_articles }) %>
+
+<%= partial('partials/pagination',
+            locals: { paginate: defined?(paginate) ? paginate : false,
+                      num_pages: defined?(num_pages) ? num_pages : nil,
+                      prev_page: defined?(prev_page) ? prev_page : nil,
+                      next_page: defined?(next_page) ? next_page : nil }) %>

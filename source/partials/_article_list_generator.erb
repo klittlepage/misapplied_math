@@ -1,0 +1,7 @@
+<% page_articles.group_by {|a| a.date.year }.each do |year, articles| %>
+  <% articles.each_with_index do |article, idx| %>
+  <%= partial('partials/article_list', locals: { year: year,
+                                                 article: article,
+                                                 article_idx: idx }) %>
+  <% end %>
+<% end %>

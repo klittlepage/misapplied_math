@@ -1,0 +1,77 @@
+<% wrap_layout :site_page do %>
+
+<% content_for :sharing_script do %>
+<script type="text/javascript" async=true src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-584df1b303c9a944"></script> 
+<% end %>
+
+<article>
+  <header>
+    <div class="jumbotron">
+      <h1><%= current_page.data.title %></h1>
+      <h5>
+        <i class="icon-calendar-empty"></i>
+        <time datetime="<%= current_page.date.to_time.iso8601 %>">
+        </time>
+      </h5>
+    </div>
+  </header>
+  <section class="row">
+    <div class="col-sm-12">
+      <%= yield %>
+    </div>
+  </section>
+  <footer>
+    <hr>
+    <div class="row">
+      <div class="col-sm-6">
+        <p class="meta">
+          <% current_page.tags.sort.map do |tag| %>
+          <% link_to tag_path(tag) do %>
+          <span class="badge"><%= tag %></span>
+          <% end %>
+          <% end %>
+        </p>
+      </div>
+      <div class="col-sm-6 social-sharing">
+        <div class="sharing text-right">
+          <div class="addthis_inline_share_toolbox"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <% if current_article.previous_article %>
+        <%= link_to "« #{prev_title current_article}",
+        current_article.previous_article %>
+        <% end %>
+        <% if current_article.previous_article && current_article.next_article %>
+        <span>|</span>
+        <% end %>
+        <% if current_article.next_article %>
+        <%= link_to "#{next_title current_article} »",
+        current_article.next_article %>
+        <% end %>
+      </div>
+    </div>
+  </footer>
+</article>
+<section>
+  <h2>Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+      var disqus_config = function () {
+          this.page.url = '<%= URI.join(host, current_page.url).to_s %>';
+          this.page.identifier = '<%= URI.join(host, current_page.url).to_s %>';
+      };
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.type = 'text/javascript';
+          s.async = true;
+          s.src = '//misappliedmath.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<% end %>

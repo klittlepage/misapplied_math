@@ -1,6 +1,0 @@
-Type,NSM
-avx,111
-unrolled,116
-naive,118
-sse_hybrid,176
-sse,310

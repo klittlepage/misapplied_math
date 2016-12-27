@@ -1,0 +1,26 @@
+---
+title: "Twelve Days 2013: The Bellman-Ford Algorithm"
+date: 2013-12-23 21:57
+comments: true
+tags: CS
+keywords: "Bellman-Ford negative cycle shortest path graph algorithm DFS depth first search."
+description: "An introduction to the Bellman-Ford algorithm."
+---
+
+## Day Twelve: The Bellman-Ford Algorithm
+
+### TL/DR
+
+If you need to find the shortest path for a graph with negative weights, the [Bellman-Ford algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm) can do so. [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra's_algorithm) has better time complexity, but Bellman-Ford can handle graphs with negative weights, and even be used to detect negative cycles.
+
+## Detecting Negative Cycles
+
+Today's post is short and sweet -- I might add code later but the algorithm is quite simple. For graphs with negative weights, Dijkstra's algorithm fails. Negative weights introduce the potential for negative cycles, in which case a shortest path might not exist as a shorter path could always be constructed by transversing the cycle once again. That breaks Dijkstra. The Bellman-Ford algorithm can detect this when it happens. Unfortunately, the generality comes at the cost of time complexity. Dijkstra's algorithm runs in <%= m %q{\O(\|E\| + \|V\|\log(\|E\|))} %>. Bellman-Ford takes <%= m %q{\O(\|E\| \cdot \|V\|))} %>, where <%= m %q{V} %> and <%= m %q{E} %> are the sizes of the vertex and edge sets, respectively. There are modifications to Bellman-Ford with slightly better time complexity, but Bellman-Ford is quite simple to implement.
+
+## Finding Negative Cycles
+
+Once you know that there *is* a negative cycle, you still need to find it. There are [fast algorithms](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.86.1981&rep=rep1&type=pdf) to do so, but [depth-first search (DFS)](https://en.wikipedia.org/wiki/Depth-first_search) is arguably the simplest route. You can run DFS on a subgraph that's produced as a bi product running Bellman-Ford (the shortest path edge set that's generated along the way) for slightly better time complexity. There's a break even point between just running depth-first search on the full graph or starting off with Bellman-Ford to check if there's a negative cycle in the first place. The run-time complexity of DFS is exponential for graphs with a branching factor greater than one so it's not cheap. For really small graphs you're almost certainly better off with a vectorized brute force search.
+
+## Why do we Care?
+
+Finding a path via DFS, or the shortest path via Bellman-Ford/Dijkstra's algorithm/[A-star](https://en.wikipedia.org/wiki/A*_search_algorithm) has lots of applications in optimization and logistics. Here's one nice [example](https://www.youtube.com/watch?v=DlkMs4ZHHr8#t=12). Graphs with negative cycles are a special case of the shortest path problem, and once upon a time, currencies were inefficient enough that triangular arbitrage persisted for some time. These days, it's a [purely high frequency game](https://arxiv.org/pdf/0812.0913.pdf).

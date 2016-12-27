@@ -1,44 +1,47 @@
-require 'dotenv'
-Dotenv.load
-require 'fileutils'
-require 'yaml'
-require 'highline/import'
+# frozen_string_literal: true
+require 'bundler'
+require 'dotenv/tasks'
+require 'aws-sdk'
+require 'uri'
+require './lib/deployment'
 
-config = YAML.load_file('_config.yml')
-gallery_dir = config['gallery_dir']
-
-desc 'Create a new visualization'
-task :new_viz, :title do |t, args|
-  raise 'No visualization directory set' unless File.directory?(gallery_dir)
-  title = args.title
-  if title =~ /(^.+\/)?(.+)/
-    page_dir = File.join(gallery_dir, title)
-    if File.directory?(page_dir)
-      fail_s = "#{page_dir} already exists. Do you want to overwrite?"
-      abort('rake aborted!') if ask(fail_s, ['y', 'n']) == 'n'
-    end
-    FileUtils.rm_rf(page_dir)
-    FileUtils::mkdir_p page_dir
-    puts "Creating new visualization directory: #{page_dir}"
-    open(File.join(page_dir, 'index.html'), 'w') do |page|
-      page.puts '---'
-      page.puts 'layout: default'
-      page.puts "title: \'#{args.title}\'"
-      page.puts "date: #{Time.now.strftime('%Y-%m-%d %H:%M')}"
-      page.puts 'keywords: '
-      page.puts 'description: '
-      page.puts 'gallery_preview: true'
-      page.puts 'stylesheet: true'
-      page.puts 'js: true'    
-      page.puts 'd3: true'     
-      page.puts 'omit_footer: true'
-      page.puts '---'
-    end
-    open(File.join(page_dir, 'page.js'), 'w') do |page|
-    end
-    open(File.join(page_dir, 'style.css'), 'w') do |page|
-    end
+def bucket(environment)
+  case environment
+  when 'staging'
+    ENV['AWS_S3_STAGING_BUCKET']
+  when 'production'
+    ENV['AWS_S3_DEPLOYMENT_BUCKET']
   else
-    puts "Syntax error: #{title} contains unsupported characters"
+    abort('Invalid environment passed as an argument to rake')
   end
 end
+
+task check_env: :dotenv do
+  keys = %w(MISAPPLIED_HOST AWS_S3_STAGING_BUCKET AWS_S3_DEPLOYMENT_BUCKET
+            AWS_ACCESS_KEY AWS_SECRET_KEY)
+  keys.each do |key|
+    abort("#{key} must be defined in your environment") unless ENV[key]
+  end
+end
+
+task :deploy, [:environment, :html_expiry,
+               :asset_expiry] => :check_env do |_, args|
+  environment = args[:environment] || 'staging'
+  html_expiry = args[:html_expiry] || 15
+  asset_expiry = args[:asset_expiry] || 31_536_000
+  MisappliedMath::Deployment.deploy_site(bucket(environment), html_expiry,
+                                         asset_expiry)
+end
+
+task :legacy_redirects, [:environment] => :check_env do |_, args|
+  environment = args[:environment] || 'staging'
+  s3 = Aws::S3::Client.new
+  ['about.html', 'categories.html', 'reading-list.html'].each do |x|
+    redirect = URI.join(ENV['MISAPPLIED_HOST'],
+                        x.split(/(.+)\.html/)[1] + '/').to_s
+    s3.put_object(bucket: bucket(environment), key: x, body: '',
+                  website_redirect_location: redirect)
+  end
+end
+
+task default: [:deploy]

@@ -1,0 +1,68 @@
+@import "vendor/bootstrap/bootstrap/variables";
+@import "variables";
+
+article {
+  .jumbotron {
+    margin-bottom: 0px;
+  }
+}
+
+.jumbotron {
+  font-size: 60px;
+  font-weight: normal;
+  line-height: 70px;
+  font-family: "Quicksand";
+  position: relative;
+  padding: 70px 0px;
+  text-align: left;
+  color: $primary-color;
+  background-color: $off_white;
+}
+
+.container .jumbotron {
+  padding-left: 0px;
+}
+
+#misapplied-jumbotron {
+  background: url('../images/theme/tokyo-background.jpg');
+  font-size: 60px;
+  margin-bottom: 20px;
+  overflow-x: hidden;
+  line-height: 80px;
+}
+
+#misapplied-jumbotron .container {
+  color: $off_white;
+  text-align: center;
+}
+
+.tagline {
+  margin-top: 0px;
+  font-weight: 400;
+}
+
+#misapplied-jumbotron .tagline {
+  color: $off_white;
+  text-align: center;
+}
+
+@media (max-width: $screen-xs-max) {
+  .jumbotron {
+    font-size: 40px;
+  }
+
+  #misapplied-jumbotron .container {
+    font-size: 90%;
+  }
+
+  #misapplied-jumbotron .tagline {
+    font-size: 22px;
+  }
+}
+
+@media screen and (min-width: $screen-tablet) {
+  .jumbotron h1, .jumbotron .h1 {
+    font-size: 48px;
+  }
+}
+

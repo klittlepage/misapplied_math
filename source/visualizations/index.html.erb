@@ -1,0 +1,31 @@
+---
+pageable: true
+per_page: 6
+blog: visualizations
+layout: site_page
+---
+
+<% page_articles.each_slice(3) do |visualizations| %>
+<div class="row">
+	<% visualizations.each do |visualization| %>
+		<div class="col-sm-12 col-md-4">
+			<div class="thumbnail">
+				<% link_to visualization do %>
+					<%= image_tag vis_preview(visualization),
+					    alt: visualization.data['description'] %>
+				<% end %>		
+				<div class="caption">
+					<h3><%= visualization.title %></h3>
+					<p><%= visualization.data['description'] %></p>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div>
+<% end %>
+
+<%= partial('partials/pagination',
+            locals: { paginate: defined?(paginate) ? paginate : false,
+                      num_pages: defined?(num_pages) ? num_pages : nil,
+                      prev_page: defined?(prev_page) ? prev_page : nil,
+                      next_page: defined?(next_page) ? next_page : nil }) %>

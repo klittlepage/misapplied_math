@@ -1,0 +1,71 @@
+---
+title: "Twelve Days 2013: LASSO Regression"
+date: 2013-12-19 12:56
+comments: true
+tags: Statistics, R
+keywords: "LASSO regression tutorial ridge regression tsvd dimensionality reduction Tikhonov regularization"
+description: "Applications of LASSO regression to sparse data sets"
+---
+
+## Day Eight: LASSO Regression
+
+### TL/DR
+
+[LASSO regression (least absolute shrinkage and selection operator)](https://en.wikipedia.org/wiki/Lasso_regression#Lasso_method) is a modified form of least squares regression that penalizes model complexity via a regularization parameter. It does so by including a term proportional to <%= m %q{||\beta||_{l_1}} %> in the objective function which shrinks coefficients towards zero, and can even eliminate them entirely. In that light, LASSO is a form of feature selection/dimensionality reduction. Unlike other forms of regularization such as [ridge regression](https://en.wikipedia.org/wiki/Tikhonov_regularization), LASSO will actually eliminate predictors. It's a simple, useful technique that performs quite well on many data sets.
+
+## Regularization
+
+[Regularization](https://en.wikipedia.org/wiki/Regularization_(mathematics)) refers to the process of adding additional constraints to a problem to avoid over fitting. ML techniques such as neural networks can generate models of arbitrary complexity that will fit in-sample data one-for-one. As we recently saw in the post on [Reed-Solomon FEC codes](/2013/12/12/twelve-days-2013-reed-solomon-codes), the same applies to regression. We definitely have a problem anytime there are more regressors than data points, but any excessively complex model will generalize horribly and do you zero good out of sample.
+
+## Why LASSO?
+
+There's a litany of regularization techniques for regression, ranging from heuristic, hands-on ones like [stepwise regression](https://en.wikipedia.org/wiki/Stepwise_regression) to full blown [dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction). They all have their place, but I like LASSO because it works very well, and it's simpler than most dimensionality reduction/ML techniques. And, despite being a non-linear method, as of 2008 it has a relatively efficient solution via [coordinate descent](https://arxiv.org/pdf/0803.3876.pdf). We can solve the optimization in <%= m %q{\O(n\cdot p)} %> time, where <%= m %q{n} %> is the length of the data set and <%= m %q{p} %> is the number of regressors.
+
+## An Example
+
+Our objective function has the form:
+
+$$
+\frac{1}{2} \sum_i(y_i - \mathbb{x}^T\beta)^2 + \lambda\sum_{j = 1}^p|\beta_j|
+$$
+
+where <%= m %q{\lambda \geq 0} %>. The first half of the equation is just the standard objective function for least squares regression. The second half penalizes regression coefficients under the <%= m %q{l_1} %> norm. The parameter <%= m %q{\lambda} %> determines how important the penalty on coefficient weights is.
+
+There are two R packages that I know of for LASSO: [lars](https://cran.r-project.org/web/packages/lars/index.html) (short for least angle regression -- a super set of LASSO) and [glmnet](https://cran.r-project.org/web/packages/glmnet/index.html). *Glmnet* includes solvers for more general models (including [elastic net](https://en.wikipedia.org/wiki/Elastic_net_regularization) -- a hybrid of LASSO and ridge that can handle catagorical variables). *Lars* is simpler to work with but the documentation isn't great. As such, here are a few points worth noting:
+
+1. The primary *lars* function generates an object that's subsequently used to generate the fit that you actually want. There's a computational motivation behind this approach. The LARS technique works by solving for a series of "knot points" with associated, monotonically decreasing values of <%= m %q{\lambda} %>. The knot points are subsequently used to compute the LASSO regression for any value of <%= m %q{\lambda} %> using only matrix math. This makes procedures such as cross validation where we need to try lots of different values of <%= m %q{\lambda} %> computationally tractable. Without it, we would have to recompute an expensive non-linear optimization each time <%= m %q{\lambda} %> changed.
+2. There's a saturation point at which <%= m %q{\lambda} %> is high enough that the null model is optimal. On the other end of the spectrum, when <%= m %q{\lambda = 0} %>, we're left with least squares. The final value of <%= m %q{\lambda} %> on the path, right before we end up with least squares, will correspond to the largest coefficient norm. Let's call these coefficients <%= m %q{\beta_\text{thresh}} %>, and denote <%= m %q{\Delta = || \beta_\text{thresh} ||_{l_1}} %>. When the *lars* package does cross validation, it does so by computing the MSE for models where the second term in the objective function is fixed at <%= m %q{x \cdot \Delta,\ x \in [0, 1]} %>. This works from a calculation standpoint (and computationally it makes things pretty), but it's counter intuitive if you're interested in the actual value of <%= m %q{\lambda} %> and not just trying to get the regression coefficients. You could easily write your own cross validation routine to use <%= m %q{\lambda} %> directly.
+3. The residual sum of squared errors will increase monotonically with <%= m %q{\lambda} %>. This makes sense as we're trading off between minimizing RSS and the model's complexity. As such, the smallest RSS will always correspond to the smallest value of <%= m %q{\lambda} %>, and not necessarily the optimal one.
+
+Here's a simple example using data from the *lars* package. We'll follow a common heuristic that recommends choosing <%= m %q{\lambda} %> one SD of MSE away from the minimum. Personally I prefer to examine the CV L-curve and pick a value right on the elbow, but this works.
+
+<% code 'r', title: 'lasso_regression.R' do %>
+require(lars)
+data(diabetes)
+
+# Compute MSEs for a range of coefficient penalties expressed as a fraction 
+# of the final L1 norm on the interval [0, 1].
+cv.res <- cv.lars(diabetes$x, diabetes$y, type = "lasso", 
+	mode = "fraction", plot = FALSE)
+
+# Choose an "optimal" value one standard deviation away from the 
+# minimum MSE.
+opt.frac <- min(cv.res$cv) + sd(cv.res$cv)
+opt.frac <- cv.res$index[which(cv.res$cv < opt.frac)[1]]
+
+# Compute the LARS path
+lasso.path <- lars(diabetes$x, diabetes$y, type = "lasso")
+
+# Compute a fit given the LARS path that we precomputed, and our optimal 
+# fraction of the final L1 norm
+lasso.fit <- predict.lars(lasso.path, type = "coefficients", 
+	mode = "fraction", s = opt.frac)
+
+# Extract the final vector of regression coefficients
+coef(lasso.fit)
+<% end %>
+
+
+## Final Notes
+
+LASSO is a biased, linear estimator whose bias increases with <%= m %q{\lambda} %>. It's not meant to provide the "best" fit as [Gauss-Markov](https://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem) defines it -- LASSO aims to find models that generalize well. Feature selection is hard problem and the best that we can do is a combination of common sense and model inference. However, no technique will save you from the worst case scenario: two very highly correlated variables, one of which is a good predictor, the other of which is spurious. It's a crap shoot as to which predictor a feature selection algorithm would penalize in that case. LASSO has a few technical issues as well. Omitted variable bias is still an issue as it is in other forms of regression, and because of its non-linear solution, LASSO isn't invariant under transformations of original data matrix.

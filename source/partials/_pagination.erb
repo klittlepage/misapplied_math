@@ -1,0 +1,20 @@
+<% if paginate and num_pages > 1 %>
+<div class="row">
+  <div class="col-sm-12 text-center">
+    <div class="pagination">
+      <% if next_page %>
+      <%= link_to '← Older', next_page, rel: 'nofollow' %>
+      <% content_for :next_page_link do %>
+      <link rel="next" href="<%= next_page.url %>" />
+      <% end %>
+      <% end %>
+      <% if prev_page %>
+      <%= link_to 'Newer →', prev_page, rel: 'nofollow' %>
+      <% content_for :prev_page_link do %>
+      <link rel="prev" href="<%= prev_page.url %>" />
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

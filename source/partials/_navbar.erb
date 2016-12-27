@@ -1,0 +1,45 @@
+<nav class="navbar navbar-inverse navbar-static-top navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'Blog', '/' %></li>
+        <li><%= link_to 'Archives', '/archives.html' %></li>
+        <li><%= link_to 'Categories', '/categories.html' %></li>
+        <li><%= link_to 'Visualizations', '/visualizations/' %></li>
+        <li><%= link_to 'Following', '/reading-list.html' %></li>
+        <li><%= link_to 'About', '/about.html' %></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <% link_to "https://github.com/#{data.site.github_username}",
+                     title: 'Github' do %>
+          <i class="fa fa-github-square social-navbar" aria-hidden="true"></i>
+          <% end %>
+        </li>
+        <li>
+          <% link_to "https://linkedin.com/in/#{data.site.linkedin_username}",
+                     title: 'LinkedIn' do %>
+          <i class="fa fa-linkedin-square social-navbar" aria-hidden="true"></i>
+          <% end %>
+        </li>
+        <li>
+          <% link_to "https://twitter.com/#{data.site.twitter_username}",
+                     title: 'Twitter' do %>
+          <i class="fa fa-twitter-square social-navbar" aria-hidden="true"></i>
+          <% end %>
+        </li>
+        <li>
+          <% link_to URI.join(host, blog.options.prefix + '/', 'feed.xml').to_s,
+                     title: 'RSS Feed' do %>
+          <i class="fa fa-rss-square social-navbar" aria-hidden="true"></i>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

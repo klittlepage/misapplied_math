@@ -1,0 +1,31 @@
+---
+title: "CME Product Sectors"
+date: 2013-10-01 15:00
+keywords: "cme sectors, cme products, d3, volume, open interest, sector size"
+description: "A visualization of CME volume and open interest by product sectors and sub sectors."
+visualization: true
+---
+
+<div class="panel panel-default">
+  <div id="cme-product-sectors-title" class="panel-heading vis-panel-heading">CME Products By Sector and Sub Sector (10-04-2013):</div>
+  <div class="panel-body vis-panel-body"> 
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            View By <span class="caret background-color-caret"></span>
+          </button>
+          <ul id="cme-product-sectors-visualization-dropdown" class="dropdown-menu" role="menu">
+            <li><a target="volume">Volume</a></li>
+            <li><a target="open-interest">Open Interest</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="cme-product-sectors-visualization"></div>
+      </div>
+    </div>
+  </div>
+</div>

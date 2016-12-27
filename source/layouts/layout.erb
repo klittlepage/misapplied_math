@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <% if build? %>
+    <link rel="preload" href="/<%= webpack_asset_path('site.css') %>" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/<%= webpack_asset_path('site.css') %>"></noscript>
+    <%= partial 'partials/css_preloader' %>
+    <style><%= partial 'partials/critical_path_css' %></style>
+    <script></script>
+    <% else %>
+    <%= stylesheet_link_tag webpack_asset_path('site.css') %>
+    <% end %>
+
+    <% if current_page.data.title %>
+    <title><%= "#{current_page.data.title} | #{data.site.author}" %></title>
+    <% else %>
+    <title><%= "#{data.site.title} | #{data.site.author}" %></title>
+    <% end %>
+
+    <% if current_page.data['description'] %>
+    <meta name="description" content="<%= current_page.data['description'] %>" />
+    <% else %>
+    <meta name="description" content="<%= data.site.description %>" />
+    <% end %>
+
+    <% if current_page.data['keywords'] %>
+    <meta name="keywords" content="<%= current_page.data['keywords'] %>" />
+    <% end %>
+
+    <% if content_for?(:canonical_link) %>
+    <%= yield_content :canonical_link %>
+    <% else %>
+    <link rel="canonical" href="<%= URI.join(host, current_page.url).to_s %>"/>
+    <% end %>
+
+    <% if content_for?(:prev_page_link) %>
+    <%= yield_content :prev_page_link %>
+    <% end %>
+    <% if content_for?(:next_page_link) %>
+    <%= yield_content :next_page_link %>
+    <% end %>
+   
+    <%= feed_tag :atom, URI.join(host, blog.options.prefix + '/', 'feed.xml').to_s, title: "Atom Feed" %>
+
+    <%= partial 'partials/analytics' %>
+  </head>
+  <body>
+    <%= yield %>
+
+    <% if content_for?(:sharing_script) %>
+    <%= yield_content :sharing_script %>
+    <% end %>
+
+    <%= javascript_include_tag webpack_asset_path('site.js'), async: true %>
+    <% if current_page.data['visualization'] %>
+    <%= javascript_include_tag webpack_asset_path('visualizations.js'), async: true %>
+    <% end %>
+  </body>
+</html>

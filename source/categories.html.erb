@@ -1,0 +1,19 @@
+---
+pageable: false
+blog: blog
+layout: site_page
+---
+
+<div class="jumbotron">
+  Categories
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <ul id="categories">
+      <% blog.tags.sort.each do |tag, articles| %>
+      <li><%= link_to "#{tag} (#{articles.size})", tag_path(tag) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

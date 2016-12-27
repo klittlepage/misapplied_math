@@ -1,0 +1,308 @@
+@import "vendor/bootstrap/bootstrap_custom";
+@import "vendor/font-awesome/font-awesome";
+@import "vendor/Flat-UI/flat-ui";
+
+@import "vendor/bootstrap/bootstrap/variables";
+@import "variables";
+
+.btn {
+  background: $bg-color;
+}
+
+.btn.btn-primary {
+  background-color: $tertiary-color;
+}
+
+.btn.btn-info {
+  background-color: $secondary-color;
+}
+
+.fui-bubble:before {
+  color: $secondary-color;
+}
+
+.demo-text-box a:hover {
+  color: $tertiary-color;
+}
+
+.demo-browser-content {
+  background-color: $bg-color;
+}
+
+.navbar .brand {
+  color: $tertiary-color;
+}
+
+.navbar .nav > li > ul:before {
+  border-color: transparent transparent $bg-color transparent;
+}
+
+.navbar .nav > li > a:hover {
+  color: $tertiary-color;
+}
+
+.navbar .nav > li > a {
+  padding: 15px 15px 17px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.navbar .nav ul li {
+  background-color: $bg-color;
+}
+
+.navbar .nav ul li.active > a, .navbar .nav ul li.active > a:hover {
+  background-color: $tertiary-color;
+}
+
+.navbar .nav ul a:hover {
+  background-color: $tertiary-color;
+}
+
+.navbar-inverse .navbar-inner {
+  background: $navbar-color;
+}
+
+.navbar-inverse .nav > li > a {
+  color: $button-text-color;
+  background-color: $button-background-color;
+}
+
+.navbar-inverse .nav .active > a {
+  color: $button-text-color;
+  background-color: $button-background-color;
+}
+
+.navbar-inverse .nav .active > a:hover,
+.navbar-inverse .nav .active > a:focus {
+  background-color: $button-active-background-color;
+  color: $button-active-text-color;
+}
+
+.navbar-inverse .navbar-toggle {
+  padding-top: 0px;
+  background-color: $button-active-background-color;
+}
+
+.navbar-inverse .navbar-toggle:before {
+  color: $button-active-text-color;
+}
+
+.navbar-inverse .navbar-toggle,
+.navbar-inverse .navbar-toggle {
+  color: $button-active-text-color;
+}
+
+.navbar-inverse .navbar-toggle:hover:before,
+.navbar-inverse .navbar-toggle:focus:before {
+  color: $button-active-text-color;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  color: $button-active-text-color;
+}
+
+.control-group.info textarea, .control-group.info
+input[type="text"], .control-group.info
+input[type="password"], .control-group.info
+input[type="datetime"], .control-group.info
+input[type="datetime-local"], .control-group.info
+input[type="date"], .control-group.info
+input[type="month"], .control-group.info
+input[type="time"], .control-group.info
+input[type="week"], .control-group.info
+input[type="number"], .control-group.info
+input[type="email"], .control-group.info
+input[type="url"], .control-group.info
+input[type="search"], .control-group.info
+input[type="tel"], .control-group.info
+input[type="color"], .control-group.info
+.uneditable-input {
+  border-color: $secondary-color;
+  color: $secondary-color;
+}
+
+.checkbox:hover,
+.radio:hover {
+  color: $tertiary-color;
+}
+
+.toggle {
+  background-color: $bg-color;
+}
+
+.toggle .toggle-radio {
+  color: $tertiary-color;
+}
+
+.tagsinput .tag {
+  background: $tertiary-color;
+}
+
+.tagsinput input {
+  color: $bg-color;
+}
+
+.tagsinput-add:hover {
+  background-color: $tertiary-color;
+}
+
+.progress .bar, .ui-slider .bar {
+  background: $tertiary-color;
+}
+
+.progress .bar-info, .ui-slider .bar-info {
+  background-color: $secondary-color;
+}
+
+.ui-slider-range {
+  background-color: $tertiary-color;
+}
+
+.pager {
+  background-color: $bg-color;
+}
+
+.pagination ul > li > a:hover, .pagination ul > li > a :focus,
+.pagination ul > li > span:hover, .pagination ul > li > span :focus {
+  background-color: $tertiary-color;
+  border-color: $tertiary-color;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: $bg-color;
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: $bg-color;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: $bg-color;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-right-color: $bg-color;
+}
+
+.tooltip-inner {
+  background-color: $bg-color;
+}
+
+.palette-firm {
+  background-color: $tertiary-color;
+}
+
+.palette-info {
+  background-color: $secondary-color;
+}
+
+.palette-night {
+  background-color: $bg-color;
+}
+
+.palette-clouds {
+  background-color: $accent-color2;
+  color: $text-color;
+}
+
+.palette-silver {
+  background-color: $text-color;
+}
+
+.palette-paragraph span {
+  color: $text-color;
+}
+
+.todo li {
+  background: $bg-color url(image_path("todo/todo.png")) 92% center no-repeat;
+}
+
+.todo li.todo-done {
+  background: transparent url(image_path("todo/done.png")) 92% center no-repeat;
+  color: $tertiary-color;
+}
+
+.todo li.todo-done .todo-name {
+  color: $tertiary-color;
+}
+
+.todo-search {
+  background: $tertiary-color url(image_path("todo/search.png")) 92% center no-repeat;
+  color: $bg-color;
+}
+
+input.todo-search-field {
+  color: $bg-color;
+}
+
+input.todo-search-field:-moz-placeholder {
+  color: $bg-color;
+}
+
+input.todo-search-field::-webkit-input-placeholder {
+  color: $bg-color;
+}
+
+input.todo-search-field.placeholder {
+  color: $bg-color;
+}
+
+.footer-banner {
+  background-color: $tertiary-color;
+}
+
+.video-js {
+  background-color: $bg-color;
+}
+
+.vjs-play-progress {
+  background: $tertiary-color;
+}
+
+.login-screen {
+  background-color: $tertiary-color;
+}
+
+.login-form .login-field:focus + .login-field-icon {
+  color: $tertiary-color;
+}
+
+.jumbotron {
+  color: $primary-color;
+}
+
+.badge {
+  padding: 4px 4px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 300;
+  color: $accent-color3;
+  background-color: $secondary-color;
+}
+
+.border-top {
+  border-top: 1px solid $primary-color;
+}
+
+.navbar-inverse .nav > li > a:hover,
+.navbar-inverse .nav > li > a:focus,
+.navbar-inverse .dropdown-menu a:hover,
+.navbar-inverse .dropdown-menu a:focus {
+  color: $button-active-text-color;
+  background-color: $button-active-background-color;
+}
+
+a > .badge {
+  color: $accent-color3;
+}
+
+a:hover > .badge {
+  color: $tertiary-color;
+  background-color: $accent-color1;
+}
+
+.navbar .nav > li:hover > ul {
+  top: 100%;
+}
