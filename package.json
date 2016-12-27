@@ -2,9 +2,10 @@
   "name": "misapplied_math",
   "version": "1.0.0",
   "description": "Misapplied Math Blog",
-  "main": "index.js",
+  "repository":"github:klittlepage/misapplied_math",
   "scripts": {
-    "check_links": "./node_modules/.bin/blc http://localhost:8080 -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'"
+    "check_links": "./node_modules/.bin/blc http://localhost:8080 -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'",
+    "check_links_prod": "./node_modules/.bin/blc https://www.klittlepage.com -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'"
   },
   "author": "Kelly Littlepage",
   "license": "ISC",

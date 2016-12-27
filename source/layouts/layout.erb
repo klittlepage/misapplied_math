@@ -7,10 +7,14 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <% if build? %>
-    <link rel="preload" href="/<%= webpack_asset_path('site.css') %>" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/<%= webpack_asset_path('site.css') %>"></noscript>
-    <%= partial 'partials/css_preloader' %>
-    <style><%= partial 'partials/critical_path_css' %></style>
+        <link rel="preload" href="/<%= webpack_asset_path('site.css') %>" as="style" onload="this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/<%= webpack_asset_path('site.css') %>"></noscript>
+        <%= partial 'partials/css_preloader' %>
+        <% if content_for?(:critical_path_css) %>
+            <style><%= yield_content :critical_path_css %></style>
+        <% else %>
+            <style><%= partial 'partials/critical_path_site_css' %></style>
+        <% end %>
     <script></script>
     <% else %>
     <%= stylesheet_link_tag webpack_asset_path('site.css') %>
