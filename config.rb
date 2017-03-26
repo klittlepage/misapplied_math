@@ -33,11 +33,11 @@ helpers do
   end
 
   def prev_title(article)
-    article.previous_article.title
+    article.article_previous.title
   end
 
   def next_title(article)
-    article.next_article.title
+    article.article_next.title
   end
 
   def webpack_asset_path(asset)

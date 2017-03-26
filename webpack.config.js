@@ -10,11 +10,11 @@ var outputPath = path.join(__dirname, '.tmp', 'dist', 'assets');
 var sourceMapIncludes =  path.join(__dirname, "node_modules");
 
 var sassLoader = ExtractTextPlugin.
-  extract("style-loader",
-          ["css-loader?sourceMap&includePaths[]=" + sourceMapIncludes, 
-          "postcss-loader",
-          "sass-loader?sourceMap&includePaths[]=" + sourceMapIncludes],
-          { "publicPath":"/assets/" });
+  extract({fallback: 'style-loader',
+           use: ["css-loader?sourceMap&includePaths[]=" + sourceMapIncludes,
+                 "sass-loader?sourceMap&includePaths[]=" + sourceMapIncludes,
+                 "postcss-loader?sourceMap"],
+           "publicPath":"/assets/"});
 
 var outputNameTemplate = PROD ? '[name]-[chunkhash].min' : '[name]-[chunkhash]';
 
@@ -24,6 +24,7 @@ var buildPlugins = [
     new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery",
                                "window.jQuery": "jquery"}),
     new CleanWebpackPlugin(outputPath),
+    new webpack.LoaderOptionsPlugin({debug: true}),
 ];
 
 if(PROD) {
@@ -42,21 +43,21 @@ module.exports = {
     visualizations: './source/javascripts/visualizations.js',
   },
 
-  resolve: {
-    root: path.join(__dirname, 'source', 'javascripts'),
-  },
-
   output: {
     path: outputPath,
     filename: outputNameTemplate + '.js',
   },
 
+  resolve: {
+    modules: [path.join(__dirname, "node_modules"),
+              path.join(__dirname, 'source', 'javascripts')],
+  },
+
   cache: true,
-  debug: true,
   devtool: 'source-map',
 
   module: {
-    loaders: [{
+    rules: [{
       test: /source\/javascripts\/.*\.js$/,
       exclude: /node_modules|\.tmp|vendor/,
       loader: 'babel-loader',

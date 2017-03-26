@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-ruby '2.3.3'
+ruby '2.4.1'
 
 # If you do not have OpenSSL installed, change
 # the following line to use 'http://'
@@ -17,7 +17,7 @@ gem 'rake'
 gem 'rubocop'
 
 # Middleman Gems
-gem 'middleman', '~> 4.1'
+gem 'middleman', '~> 4.2'
 gem 'middleman-blog'
 gem 'middleman-livereload'
 gem 'middleman-minify-html'

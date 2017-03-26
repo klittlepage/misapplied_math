@@ -40,16 +40,16 @@
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
-        <% if current_article.previous_article %>
+        <% if current_article.article_previous %>
         <%= link_to "« #{prev_title current_article}",
-        current_article.previous_article %>
+        current_article.article_previous %>
         <% end %>
-        <% if current_article.previous_article && current_article.next_article %>
+        <% if current_article.article_previous && current_article.article_next %>
         <span>|</span>
         <% end %>
-        <% if current_article.next_article %>
+        <% if current_article.article_next %>
         <%= link_to "#{next_title current_article} »",
-        current_article.next_article %>
+        current_article.article_next %>
         <% end %>
       </div>
     </div>
