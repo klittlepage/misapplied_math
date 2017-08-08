@@ -1,22 +1,22 @@
-var PROD = (process.env.MIDDLEMAN_ENV === 'production')
+var PROD = (process.env.MIDDLEMAN_ENV === "production")
 
-var webpack = require('webpack');
-var path = require('path');
+var webpack = require("webpack");
+var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var ManifestPlugin = require('webpack-manifest-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+var ManifestPlugin = require("webpack-manifest-plugin");
+var CleanWebpackPlugin = require("clean-webpack-plugin");
 
-var outputPath = path.join(__dirname, '.tmp', 'dist', 'assets');
+var outputPath = path.join(__dirname, ".tmp", "dist", "assets");
 var sourceMapIncludes =  path.join(__dirname, "node_modules");
 
 var sassLoader = ExtractTextPlugin.
-  extract({fallback: 'style-loader',
+  extract({fallback: "style-loader",
            use: ["css-loader?sourceMap&includePaths[]=" + sourceMapIncludes,
                  "sass-loader?sourceMap&includePaths[]=" + sourceMapIncludes,
                  "postcss-loader?sourceMap"],
            "publicPath":"/assets/"});
 
-var outputNameTemplate = PROD ? '[name]-[chunkhash].min' : '[name]-[chunkhash]';
+var outputNameTemplate = PROD ? "[name]-[chunkhash].min" : "[name]-[chunkhash]";
 
 var buildPlugins = [
     new ExtractTextPlugin(outputNameTemplate + ".css"),
@@ -37,58 +37,110 @@ if(PROD) {
 module.exports = {
   entry: {
     site: [
-      './source/stylesheets/site.scss',
-      './source/javascripts/site.js',
+      "./source/stylesheets/site.scss",
+      "./source/javascripts/site.js",
     ],
-    visualizations: './source/javascripts/visualizations.js',
+    visualizations: "./source/javascripts/visualizations.js",
   },
 
   output: {
     path: outputPath,
-    filename: outputNameTemplate + '.js',
+    filename: outputNameTemplate + ".js",
   },
 
   resolve: {
     modules: [path.join(__dirname, "node_modules"),
-              path.join(__dirname, 'source', 'javascripts')],
+              path.join(__dirname, "source", "javascripts")],
   },
 
   cache: true,
-  devtool: 'source-map',
+  devtool: "source-map",
 
   module: {
     rules: [{
       test: /source\/javascripts\/.*\.js$/,
       exclude: /node_modules|\.tmp|vendor/,
-      loader: 'babel-loader',
-      query: { presets: ['es2015'] }
+      use: [
+        {
+          loader: "babel-loader",
+          options: {
+            presets: "es2015"
+          }
+        }
+      ],
     }, {
       test: /.*\.scss$/,
-      loader: sassLoader
+      use: sassLoader
     }, { 
       test: /\.(png|jpg|jpeg)$/,
-      loader: 'url-loader?[name]-[chunkhash].[ext]&limit=8192'
+      use: [
+        {
+          loader: "url-loader?[name]-[chunkhash].[ext]",
+          options: {
+            limit: 8192
+          }
+        }
+      ]
     }, {
       test: /\.ico$/,
-      loader: 'url-loader?mimetype=image/x-icon'
+      use: [
+        {
+          loader: "url-loader",
+          options: {
+            mimetype: "image/x-icon"
+          }
+        }
+      ]
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      use: [
+        {
+          loader: "url-loader",
+          options: {
+            limit: 10000,
+            mimetype: "application/font-woff"
+          }
+        }
+      ]
     }, {
       test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      use: [
+        {
+          loader: "url-loader",
+          options: {
+            limit: 10000,
+            mimetype: "application/font-woff"
+          }
+        }
+      ]
     }, {
       test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=application/octet-stream"
+      use: [
+        {
+          loader: "url-loader",
+          options: {
+            limit: 10000,
+            mimetype: "application/octet-stream"
+          }
+        }
+      ]
     }, {
       test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "file-loader"
+      use: "file-loader"
     }, {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+      use: [
+        {
+          loader: "url-loader",
+          options: {
+            limit: 10000,
+            mimetype: "image/svg+xml"
+          }
+        }
+      ]
     }, { 
-      test: require.resolve('jquery'),
-      loader: 'expose-loader?jQuery!expose-loader?$' 
+      test: require.resolve("jquery"),
+      use: ["expose-loader?jQuery", "expose-loader?$"]
     }]
   },
   plugins: buildPlugins,
