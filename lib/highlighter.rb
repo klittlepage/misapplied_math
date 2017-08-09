@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'middleman-syntax'
 
 Middleman::Syntax::Highlighter.instance_eval do

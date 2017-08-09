@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'execjs'
 
 # A module to facilitate math typesetting via katex

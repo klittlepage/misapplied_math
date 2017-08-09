@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'lib/katex'
 
 # A module containing methods to render katex segments

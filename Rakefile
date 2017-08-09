@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'bundler'
 require 'dotenv/tasks'
 require 'aws-sdk'
@@ -17,15 +18,15 @@ def bucket(environment)
 end
 
 task check_env: :dotenv do
-  keys = %w(MISAPPLIED_HOST AWS_S3_STAGING_BUCKET AWS_S3_DEPLOYMENT_BUCKET
-            AWS_ACCESS_KEY AWS_SECRET_KEY)
+  keys = %w[MISAPPLIED_HOST AWS_S3_STAGING_BUCKET AWS_S3_DEPLOYMENT_BUCKET
+            AWS_ACCESS_KEY AWS_SECRET_KEY]
   keys.each do |key|
     abort("#{key} must be defined in your environment") unless ENV[key]
   end
 end
 
-task :deploy, [:environment, :html_expiry,
-               :asset_expiry] => :check_env do |_, args|
+task :deploy, %i[environment html_expiry
+                 asset_expiry] => :check_env do |_, args|
   environment = args[:environment] || 'staging'
   html_expiry = args[:html_expiry] || 15
   asset_expiry = args[:asset_expiry] || 31_536_000
