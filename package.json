@@ -5,7 +5,8 @@
   "repository": "github:klittlepage/misapplied_math",
   "scripts": {
     "check_links": "./node_modules/.bin/blc http://localhost:8000 -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'",
-    "check_links_prod": "./node_modules/.bin/blc https://www.klittlepage.com -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'"
+    "check_links_prod": "./node_modules/.bin/blc https://www.klittlepage.com -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'",
+    "lint_webpack": "./node_modules/.bin/eslint -c ./node_modules/eslint-config-airbnb-base/.eslintrc --fix webpack.config.js"
   },
   "author": "Kelly Littlepage",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "css-loader": "^0.28.4",
     "eslint": "^4.4.1",
     "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",

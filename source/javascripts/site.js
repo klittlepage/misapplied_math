@@ -1,6 +1,6 @@
 /* eslint-env browser */
-require('./vendor/bootstrap/bootstrap/collapse.js');
-require('./vendor/bootstrap/bootstrap/dropdown.js');
+import 'javascripts/vendor/bootstrap/bootstrap/collapse';
+import 'javascripts/vendor/bootstrap/bootstrap/dropdown';
 
 (() => {
   const docHead = document.getElementsByTagName('head')[0];

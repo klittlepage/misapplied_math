@@ -1,73 +1,77 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var ESLint = require('eslint/lib/formatters/checkstyle');
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ESLint = require('eslint/lib/formatters/checkstyle');
 
-var outputPath = path.join(__dirname, '.tmp', 'dist', 'assets');
-var sourceMapIncludes =  path.join(__dirname, 'node_modules');
+const outputPath = path.resolve('.tmp', 'dist', 'assets');
+const sourceMapIncludes = path.resolve('node_modules');
 
-var sassLoader = ExtractTextPlugin.
-  extract({fallback: 'style-loader',
-           use: ['css-loader?sourceMap&includePaths[]=' + sourceMapIncludes,
-                 'sass-loader?sourceMap&includePaths[]=' + sourceMapIncludes,
-                 'postcss-loader?sourceMap'],
-           'publicPath':'/assets/'});
+const sassLoader = ExtractTextPlugin
+  .extract({ fallback: 'style-loader',
+    use: [`css-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
+      `sass-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
+      'postcss-loader?sourceMap'],
+    publicPath: '/assets/' });
 
-var PROD = (process.env.MIDDLEMAN_ENV === 'production');
-var outputNameTemplate = PROD ? '[name]-[chunkhash].min' : '[name]-[chunkhash]';
+const PROD = (process.env.MIDDLEMAN_ENV === 'production');
+const outputNameTemplate = PROD ? '[name]-[chunkhash].min' :
+  '[name]-[chunkhash]';
 
-var buildPlugins = [
-    new ExtractTextPlugin(outputNameTemplate + '.css'),
-    new ManifestPlugin(),
-    new webpack.ProvidePlugin({$: 'jquery', jQuery: 'jquery',
-                               'window.jQuery': 'jquery'}),
-    new CleanWebpackPlugin(outputPath),
-    new webpack.LoaderOptionsPlugin(
-      {
-        debug: true,
-        options: {
-          eslint: {
-            configFile: path.join(__dirname, 'node_modules',
-                                  '/eslint-config-airbnb-base', '.eslintrc'),
-            failOnWarning: false,
-            failOnError: true,
-            fix: true,
-            outputReport: {
-              filePath: path.join(__dirname, '.tmp', 'checkstyle.xml'),
-              formatter: ESLint,
-            },
+const buildPlugins = [
+  new ExtractTextPlugin(`${outputNameTemplate}.css`),
+  new ManifestPlugin(),
+  new webpack.ProvidePlugin({ $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery' }),
+  new CleanWebpackPlugin(outputPath),
+  new webpack.LoaderOptionsPlugin(
+    {
+      debug: true,
+      options: {
+        eslint: {
+          configFile: '.eslintrc',
+          failOnWarning: true,
+          failOnError: true,
+          fix: false,
+          outputReport: {
+            filePath: path.resolve('.tmp', 'checkstyle.xml'),
+            formatter: ESLint,
           },
         },
-      }
-    ),
+      },
+    }
+  ),
 ];
 
-if(PROD) {
-  uglify = new webpack.optimize.UglifyJsPlugin({minimize: true,
-                                                sourceMap: true,
-                                                compress: { warnings: false }});
+if (PROD) {
+  const uglify = new webpack.optimize.UglifyJsPlugin({ minimize: true,
+    sourceMap: true,
+    compress: { warnings: false } });
   buildPlugins.push(uglify);
 }
 
 module.exports = {
   entry: {
     site: [
-      './source/stylesheets/site.scss',
-      './source/javascripts/site.js',
+      path.resolve('source', 'stylesheets', 'site.scss'),
+      path.resolve('source', 'javascripts', 'site.js')
     ],
-    visualizations: './source/javascripts/visualizations.js',
+    visualizations: path.resolve('source', 'javascripts', 'visualizations.js')
   },
 
   output: {
     path: outputPath,
-    filename: outputNameTemplate + '.js',
+    filename: `${outputNameTemplate}.js`,
   },
 
   resolve: {
-    modules: [path.join(__dirname, 'node_modules'),
-              path.join(__dirname, 'source')],
+    extensions: ['.js', '.jsx'],
+    modules: [
+      'source',
+      'node_modules',
+    ],
   },
 
   cache: true,
@@ -85,8 +89,8 @@ module.exports = {
         }
       ],
     }, {
-      test: /\.js$/,
-      exclude: /node_modules|\.tmp|vendor/,
+      test: /source\/.*\.js$/,
+      exclude: /vendor/,
       enforce: 'pre',
       use: [
         {
@@ -99,7 +103,7 @@ module.exports = {
     }, {
       test: /.*\.scss$/,
       use: sassLoader
-    }, { 
+    }, {
       test: /\.(png|jpg|jpeg)$/,
       use: [
         {
@@ -169,11 +173,11 @@ module.exports = {
     }, {
       test: require.resolve('jquery'),
       use: [{
-          loader: 'expose-loader',
-          options: 'jQuery'
-      },{
-          loader: 'expose-loader',
-          options: '$'
+        loader: 'expose-loader',
+        options: 'jQuery'
+      }, {
+        loader: 'expose-loader',
+        options: '$'
       }]
     }]
   },
