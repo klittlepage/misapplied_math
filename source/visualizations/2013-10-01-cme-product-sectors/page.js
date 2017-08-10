@@ -186,7 +186,7 @@ import * as d3 from 'd3';
     );
   }
 
-  const targetSelector = '#cme-product-sectors-visualization';
+  const targetSelector = '.cme-product-sectors-visualization';
   const dropdownSelector = '#cme-product-sectors-visualization-dropdown a';
   const titleSelector = '#cme-product-sectors-title';
   if ($(targetSelector)) {

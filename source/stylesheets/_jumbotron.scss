@@ -1,49 +1,51 @@
-@import "vendor/bootstrap/bootstrap/variables";
-@import "variables";
+@import 'vendor/bootstrap/bootstrap/variables';
+@import 'variables';
 
 article {
   .jumbotron {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 
 .jumbotron {
+  background-color: $off-white;
+  color: $primary-color;
+  font-family: 'Quicksand';
   font-size: 60px;
   font-weight: normal;
   line-height: 70px;
-  font-family: "Quicksand";
+  padding: 70px 0;
   position: relative;
-  padding: 70px 0px;
   text-align: left;
-  color: $primary-color;
-  background-color: $off_white;
 }
 
-.container .jumbotron {
-  padding-left: 0px;
+.container {
+  .jumbotron {
+    padding-left: 0;
+  }
 }
 
-#misapplied-jumbotron {
+.misapplied-jumbotron {
   background: url('../images/theme/tokyo-background.jpg');
   font-size: 60px;
+  line-height: 80px;
   margin-bottom: 20px;
   overflow-x: hidden;
-  line-height: 80px;
-}
 
-#misapplied-jumbotron .container {
-  color: $off_white;
-  text-align: center;
+  .container {
+    color: $off-white;
+    text-align: center;
+  }
+
+  .tagline {
+    color: $off-white;
+    text-align: center;
+  }
 }
 
 .tagline {
-  margin-top: 0px;
   font-weight: 400;
-}
-
-#misapplied-jumbotron .tagline {
-  color: $off_white;
-  text-align: center;
+  margin-top: 0;
 }
 
 @media (max-width: $screen-xs-max) {
@@ -51,18 +53,22 @@ article {
     font-size: 40px;
   }
 
-  #misapplied-jumbotron .container {
-    font-size: 90%;
-  }
+  .misapplied-jumbotron {
+    .container {
+      font-size: 90%;
+    }
 
-  #misapplied-jumbotron .tagline {
-    font-size: 22px;
+    .tagline {
+      font-size: 22px;
+    }
   }
 }
 
 @media screen and (min-width: $screen-tablet) {
-  .jumbotron h1, .jumbotron .h1 {
-    font-size: 48px;
+  .jumbotron {
+    h1,
+    .h1 {
+      font-size: 48px;
+    }
   }
 }
-

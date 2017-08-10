@@ -1,16 +1,20 @@
-#cme-product-sectors-visualization {
-  svg text {
-    font-size: 11px;
+@import '../../stylesheets/variables';
+
+.cme-product-sectors-visualization {
+  svg {
+    text {
+      font-size: 11px;
+    }
   }
 }
 
 .cme-vis-chart-tooltip {
+  background: $light-blue;
+  border: 0;
+  border-radius: 8px;
+  color: $off-white;
   font-size: 22px;
-  text-align: center;
   line-height: 28px;
   padding: 2px;
-  color: #F1F1F1;
-  background: lightsteelblue;
-  border: 0px;
-  border-radius: 8px;
+  text-align: center;
 }

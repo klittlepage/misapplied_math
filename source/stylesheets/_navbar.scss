@@ -1,45 +1,86 @@
-@import "vendor/bootstrap/bootstrap/variables";
-@import "variables";
+@import 'vendor/bootstrap/bootstrap/variables';
+@import 'variables';
 
 .navbar {
-  margin-bottom: 0px;
-  border-width: 0px;
+  border-width: 0;
+  margin-bottom: 0;
+
+  .navbar-right {
+    & > li {
+      & > a {
+        padding-bottom: 8px;
+        padding-top: 8px;
+      }
+    }
+  }
+}
+
+.navbar-nav {
+  & > li {
+    & > a {
+      font-size: 18px;
+      font-weight: normal;
+    }
+  }
 }
 
 .navbar-inner {
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 .navbar-inverse {
   background-color: $navbar-color;
-}
 
-.navbar-inverse .navbar-toggle:hover, 
-.navbar-inverse .navbar-toggle:focus {
-  background-color: $button-active-background-color;
-}
+  .navbar-toggle {
+    &:focus,
+    &:hover {
+      background-color: $button-active-background-color;
+    }
 
-.navbar-inverse .navbar-toggle .icon-bar {
-  background-color: $button-active-text-color;
+    .icon-bar {
+      background-color: $button-active-text-color;
+    }
+  }
 }
 
 @media (min-width: $grid-float-breakpoint) {
   .navbar-right {
-    margin-right: 0px;
+    margin-right: 0;
   }
-  
-  .navbar-collapse .navbar-nav.navbar-right {
-    &:last-child {
-      margin-right: 0;
+
+  .navbar-collapse {
+    .navbar-nav {
+      &.navbar-right {
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
 
 @media (max-width: $grid-float-breakpoint) {
-  .navbar-inverse .nav-collapse .nav > li > a:hover,
-  .navbar-inverse .nav-collapse .nav > li > a:focus,
-  .navbar-inverse .nav-collapse .dropdown-menu a:hover,
-  .navbar-inverse .nav-collapse .dropdown-menu a:focus {
-    color: $off_white;
+  .navbar-inverse {
+    .nav-collapse {
+      .nav {
+        & > li {
+          & > a {
+            &:focus,
+            &:hover {
+              color: $off-white;
+            }
+          }
+        }
+      }
+
+      .dropdown-menu {
+        a {
+          &:focus,
+          &:hover {
+            color: $off-white;
+          }
+        }
+      }
+    }
   }
 }

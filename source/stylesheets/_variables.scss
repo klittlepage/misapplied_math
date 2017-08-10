@@ -1,26 +1,30 @@
-$off_white:                         #F1F1F1;
-$light_blue:                        #0088cc;
-$dark_blue:                         #005580;
+$white:                             #fff;
+$off-white:                         #f1f1f1;
+$off-white-light-transparency:      rgba(255, 255, 255, .8);
+$light-blue:                        #08c;
+$dark-blue:                         #005580;
+$translucent-grey:                  rgba(255, 255, 255, .8);
+$light-grey:                        #e5e5e5;
 $grey:                              #5a5e5f;
 $black:                             #333;
-$slate_blue:                        #2C3E50;
+$slate-blue:                        #2c3e50;
 
 // Jumbotron, Horizontal Rules, Headings
 $primary-color:                     $black;
 // Tags, Links, Main Heading, Quote Border
-$secondary-color:                   $light_blue;
+$secondary-color:                   $light-blue;
 // Hover-over color, Active Page color
-$tertiary-color:                    $dark_blue;
+$tertiary-color:                    $dark-blue;
 // Background color for tags
-$accent-color1:                     $off_white;
+$accent-color1:                     $off-white;
 // Sub-headings, Date Stamp
-$accent-color2:                     #34495E;
+$accent-color2:                     #34495e;
 // Tag text
-$accent-color3:                     $off_white;
+$accent-color3:                     $off-white;
 // Background
-$bg-color:                          $off_white;
+$bg-color:                          $off-white;
 // Code background
-// $code-bg-color:                     $slate_blue;
+// $code-bg-color:                     $slate-blue;
 $code-bg-color:                     #002b36;
 // Quote Color
 $quote-color:                       $black;
@@ -30,13 +34,12 @@ $text-color:                        $grey;
 $footer-color:                      $grey;
 
 // Navbar color
-$navbar-color:                      $slate_blue;
+$navbar-color:                      $slate-blue;
 // Toggle on/toggle off colors for the nav bar buttons
-$header-button-toggled-on:          $off_white;
+$header-button-toggled-on:          $off-white;
 $header-button-toggled-off:         $navbar-color;
 // Button hover over logic
 $button-text-color:                 $header-button-toggled-on;
 $button-active-text-color:          $header-button-toggled-off;
 $button-background-color:           $header-button-toggled-off;
 $button-active-background-color:    $header-button-toggled-on;
-

@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ESLint = require('eslint/lib/formatters/checkstyle');
+const SassLint = require('sasslint-webpack-plugin');
 
 const outputPath = path.resolve('.tmp', 'dist', 'assets');
 const sourceMapIncludes = path.resolve('node_modules');
@@ -12,7 +13,7 @@ const sassLoader = ExtractTextPlugin
   .extract({ fallback: 'style-loader',
     use: [`css-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
       `sass-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
-      'postcss-loader?sourceMap'],
+      `postcss-loader?sourceMap&includePaths[]=${sourceMapIncludes}`],
     publicPath: '/assets/' });
 
 const PROD = (process.env.MIDDLEMAN_ENV === 'production');
@@ -26,6 +27,12 @@ const buildPlugins = [
     jQuery: 'jquery',
     'window.jQuery': 'jquery' }),
   new CleanWebpackPlugin(outputPath),
+  new SassLint({
+    glob: 'source/stylesheets/*.s?(a|c)ss',
+    ignorePlugins: ['extract-text-webpack-plugin'],
+    failOnWarning: true,
+    failOnError: true
+  }),
   new webpack.LoaderOptionsPlugin(
     {
       debug: true,

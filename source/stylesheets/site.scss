@@ -1,197 +1,180 @@
-@import "flat-ui-custom";
-@import "navbar";
-@import "jumbotron";
+@import 'flat-ui-custom';
+@import 'navbar';
+@import 'jumbotron';
 
-@import "vendor/bootstrap/bootstrap/variables";
-@import "vendor/bootstrap/bootstrap/mixins";
-@import "variables";
-@import "vendor/katex.min";
-@import "code_highlighting";
+@import 'vendor/bootstrap/bootstrap/variables';
+@import 'vendor/bootstrap/bootstrap/mixins';
+@import 'variables';
+@import 'vendor/katex.min';
+@import 'code_highlighting';
 
-@import "visualizations";
+@import 'visualizations';
+@import 'fonts';
 
-@font-face {
-  font-family: 'Quicksand';
-  font-weight: 300;
-  font-style: normal;
-  src: url('https://fonts.gstatic.com/s/quicksand/v6/qhfoJiLu10kFjChCCTvGlHZ2MAKAc2x4R1uOSeegc5U.eot');
-  src: url('https://fonts.gstatic.com/s/quicksand/v6/qhfoJiLu10kFjChCCTvGlHZ2MAKAc2x4R1uOSeegc5U.eot?#iefix') format('embedded-opentype'),
-       local('Quicksand Light'),
-       local('Quicksand-300'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/qhfoJiLu10kFjChCCTvGlBampu5_7CjHW5spxoeN3Vs.woff2') format('woff2'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/qhfoJiLu10kFjChCCTvGlKRDOzjiPcYnFooOUGCOsRk.woff') format('woff'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/qhfoJiLu10kFjChCCTvGlInF5uFdDttMLvmWuJdhhgs.ttf') format('truetype'),
-       url('https://fonts.gstatic.com/l/font?kit=qhfoJiLu10kFjChCCTvGlFlIn5tFQcqMuf-jhyJP0ps&skey=2d4bb97196ce133f&v=v6#Quicksand') format('svg');
-}
-
-@font-face {
-  font-family: 'Quicksand';
-  font-weight: 400;
-  font-style: normal;
-  src: url('https://fonts.gstatic.com/s/quicksand/v6/sKd0EMYPAh5PYCRKSryvW_Y6323mHUZFJMgTvxaG2iE.eot');
-  src: url('https://fonts.gstatic.com/s/quicksand/v6/sKd0EMYPAh5PYCRKSryvW_Y6323mHUZFJMgTvxaG2iE.eot?#iefix') format('embedded-opentype'),
-       local('Quicksand Regular'),
-       local('Quicksand-regular'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/sKd0EMYPAh5PYCRKSryvW5Bw1xU1rKptJj_0jans920.woff2') format('woff2'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/sKd0EMYPAh5PYCRKSryvW7O3LdcAZYWl9Si6vvxL-qU.woff') format('woff'),
-       url('https://fonts.gstatic.com/s/quicksand/v6/sKd0EMYPAh5PYCRKSryvW6CWcynf_cDxXwCLxiixG1c.ttf') format('truetype'),
-       url('https://fonts.gstatic.com/l/font?kit=sKd0EMYPAh5PYCRKSryvW5bd9NUM7myrQQz30yPaGQ4&skey=c01f11fa5439d932&v=v6#Quicksand') format('svg');
-}
-
-@font-face {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-style: normal;
-  src: url('https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3fY6323mHUZFJMgTvxaG2iE.eot');
-  src: url('https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3fY6323mHUZFJMgTvxaG2iE.eot?#iefix') format('embedded-opentype'),
-       local('Open Sans'),
-       local('Open-Sans-regular'),
-       url('https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2') format('woff2'),
-       url('https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff') format('woff'),
-       url('https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf') format('truetype'),
-       url('https://fonts.gstatic.com/l/font?kit=cJZKeOuBrn4kERxqtaUH3Zbd9NUM7myrQQz30yPaGQ4&skey=62c1cbfccc78b4b2&v=v13#OpenSans') format('svg');
-}
-
-@font-face {
-  font-family: 'Open Sans';
-  font-weight: 300;
-  font-style: normal;
-  src: url('https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTXZ2MAKAc2x4R1uOSeegc5U.eot');
-  src: url('https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTXZ2MAKAc2x4R1uOSeegc5U.eot?#iefix') format('embedded-opentype'),
-       local('Open Sans Light'),
-       local('Open-Sans-300'),
-       url('https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTRampu5_7CjHW5spxoeN3Vs.woff2') format('woff2'),
-       url('https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTaRDOzjiPcYnFooOUGCOsRk.woff') format('woff'),
-       url('https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTYnF5uFdDttMLvmWuJdhhgs.ttf') format('truetype'),
-       url('https://fonts.gstatic.com/l/font?kit=DXI1ORHCpsQm3Vp6mXoaTVlIn5tFQcqMuf-jhyJP0ps&skey=b33cc031a589c168&v=v13#OpenSans') format('svg');
-}
-
-body, html {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 body {
-  color: $text-color;
   background: $bg-color;
-  font: 18px/1.831 "Open Sans", sans-serif;
+  color: $text-color;
+  font: 18px/1.831 'Open Sans', sans-serif;
 }
 
 a {
   color: $secondary-color;
+
+  &:hover {
+    color: $tertiary-color;
+  }
 }
 
-a:hover {
-  color: $tertiary-color;
-}
-
-h1, h2 {
+h1,
+h2 {
   color: $primary-color;
 }
 
-h3, h4, h5, h6 {
+h3,
+h4,
+h5,
+h6 {
   color: $accent-color2;
 }
 
 h1 {
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   font-weight: 900;
 }
 
-h2, h3, h4, h5, h6 {
-  font-family: "Quicksand";
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Quicksand';
   font-weight: 500;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 32px;
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: 26px;
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: 24px;
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: 18px;
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: 16px;
 }
 
-h6, .h6 {
+h6,
+.h6 {
   font-size: 13px;
 }
 
-p, li {
+p,
+li {
   font-weight: 300;
 }
 
 .thumbnail {
-  border-width: 0px;
+  border-width: 0;
+
   .caption {
     h3 {
-      margin-top: 2px;
       margin-bottom: 4px;
+      margin-top: 2px;
     }
 
     p {
-      margin-bottom: 10px;
       line-height: $line-height-base;
+      margin-bottom: 10px;
     }
   }
 }
 
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
-.uneditable-input {
+textarea {
   color: $bg-color;
+
+  &:focus {
+    border-color: $tertiary-color;
+  }
 }
 
-textarea:focus,
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="datetime"]:focus,
-input[type="datetime-local"]:focus,
-input[type="date"]:focus,
-input[type="month"]:focus,
-input[type="time"]:focus,
-input[type="week"]:focus,
-input[type="number"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-input[type="search"]:focus,
-input[type="tel"]:focus,
-input[type="color"]:focus,
-.uneditable-input:focus {
-  border-color: $tertiary-color;
+input {
+  // Workaround until
+  // https://github.com/webpack-contrib/sass-loader/issues/351 is resolved
+  // sass-lint:disable force-pseudo-nesting
+  &[type='text'],
+  &[type='password'],
+  &[type='datetime'],
+  &[type='datetime-local'],
+  &[type='date'],
+  &[type='month'],
+  &[type='time'],
+  &[type='week'],
+  &[type='number'],
+  &[type='email'],
+  &[type='url'],
+  &[type='search'],
+  &[type='tel'],
+  &[type='color'] {
+    color: $bg-color;
+  }
+
+  &[type='text']:focus,
+  &[type='password']:focus,
+  &[type='datetime']:focus,
+  &[type='datetime-local']:focus,
+  &[type='date']:focus,
+  &[type='month']:focus,
+  &[type='time']:focus,
+  &[type='week']:focus,
+  &[type='number']:focus,
+  &[type='email']:focus,
+  &[type='url']:focus,
+  &[type='search']:focus,
+  &[type='tel']:focus,
+  &[type='color']:focus {
+    color: $bg-color;
+  }
+}
+
+.uneditable-input {
+  color: $bg-color;
+
+  &:focus {
+    border-color: $tertiary-color;
+  }
 }
 
 footer {
   color: $footer-color;
-}
 
-footer a {
-  color: $secondary-color;
+  a {
+    color: $secondary-color;
+  }
+
+  &.footer-page {
+    margin-top: 40px;
+  }
 }
 
 hr {
@@ -199,64 +182,76 @@ hr {
 }
 
 @media (max-width: $screen-xs-max) {
-  #categories h1 {
-    font-size: 24px;
+  .categories-list {
+    h1 {
+      font-size: 24px;
+    }
   }
 }
 
-#categories .category {
-  padding-top: .25em;
-  padding-bottom: .25em;
+.categories-list {
+  .category {
+    padding-bottom: .25em;
+    padding-top: .25em;
+  }
 }
 
 img {
-  width: auto;
+  border: 0;
   height: auto;
   max-width: 100%;
   vertical-align: middle;
-  border: 0;
+  width: auto;
 }
 
 article {
   img {
     @include center-block;
-    width: 600px;
     height: 470px;
+    width: 600px;
   }
 }
 
 .date-time {
-  font-size: 15px;
   color: $accent-color2;
+  font-size: 15px;
   font-weight: 500;
 }
 
-.btn.btn-default.dropdown-toggle {
-  color: $bg-color;
-  background-color: $navbar-color;
+.btn {
+  &.btn-default {
+    &.dropdown-toggle {
+      background-color: $navbar-color;
+      color: $bg-color;
+
+      &:active {
+        color: $bg-color;
+      }
+    }
+  }
 }
 
-.btn.btn-default.dropdown-toggle:active {
-  color: $bg-color;
+.panel-body {
+  &.vis-panel-body {
+    background-color: $bg-color;
+  }
 }
 
-.panel-body.vis-panel-body {
-  background-color: $bg-color;
-}
-
-.panel-heading.vis-panel-heading {
-  background-color: $bg-color;
+.panel-heading {
+  &.vis-panel-heading {
+    background-color: $bg-color;
+  }
 }
 
 .background-color-caret {
-  border-top-color: $bg-color !important;
-  border-bottom-color: $bg-color !important;
+  border-bottom-color: $bg-color;
+  border-top-color: $bg-color;
 }
 
 .katex-display {
   overflow-x: auto;
 
-  &> .katex {
+  & > .katex {
     overflow-y: hidden;
   }
 }
@@ -265,71 +260,65 @@ article {
   white-space: pre;
 }
 
-figure.code-highlight-figure {
-  margin-bottom: 30px;
+figure {
+  &.code-highlight-figure {
+    margin-bottom: 30px;
 
-  pre.highlight {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    border-bottom: 0px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-  }
-
-  td.rouge-gutter {
-    pre.lineno {
-      background-color: $code-bg-color;
-      border: none;
-      margin-bottom: 0px;
-    }
-  }
-
-  td.rouge-code {
     pre {
-      background-color: $code-bg-color;
-      border: none;
-      margin-bottom: 0px;
+      &.highlight {
+        border-bottom: 0;
+        border-radius: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    td {
+      &.rouge-gutter {
+        pre {
+          &.lineno {
+            background-color: $code-bg-color;
+            border: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      &.rouge-code {
+        pre {
+          background-color: $code-bg-color;
+          border: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .code-highlight-caption {
+      background-color: $light-grey;
+      background-image: linear-gradient($white, $light-grey 6%, $light-grey 90%,
+        $light-grey);
+      border: 1px solid $light-grey;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      color: $grey;
+      font-family: 'Helvetica Neue', Arial, 'Lucida Grande',
+      'Lucida Sans Unicode', Lucida, sans-serif;
+      font-size: .9em;
+      font-weight: normal;
+      line-height: 2em;
+      margin-bottom: 0;
+      position: relative;
+      text-align: center;
+      text-shadow: $translucent-grey 0 1px 0;
     }
   }
-
-  .code-highlight-caption {
-    position: relative;
-    font-size: .9em;
-    text-align: center;
-    line-height: 2em;
-    text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-    color: #474747;
-    font-weight: normal;
-    margin-bottom: 0;
-    background-color: #ccc;
-    background-image: -webkit-linear-gradient(#fff, #f0f0f0 6%,
-                                              #e5e5e5 90%, #e5e5e5);
-    background-image: linear-gradient(#fff, #f0f0f0 6%, #e5e5e5 90%, #e5e5e5);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-family: "Helvetica Neue", Arial, "Lucida Grande",
-                 "Lucida Sans Unicode", Lucida, sans-serif;
-    border: 1px solid #cbcbcb;
-  }
-}
-
-figure.code-highlight-figure pre.highlight {
-  border-radius: 0;
 }
 
 .social-navbar {
   font-size: 36px;
   vertical-align: middle;
-}
-
-.navbar-nav > li > a {
-  font-size: 18px;
-  font-weight: normal;
-}
-
-.navbar .navbar-right > li > a {
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .pagination {
@@ -340,8 +329,3 @@ figure.code-highlight-figure pre.highlight {
     margin-right: 10px;
   }
 }
-
-footer.footer-page {
-  margin-top: 40px;
-}
-
