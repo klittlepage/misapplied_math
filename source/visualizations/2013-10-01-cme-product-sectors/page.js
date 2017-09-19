@@ -4,8 +4,10 @@ import $ from 'jquery';
 import * as d3 from 'd3';
 
 (() => {
-  function cmeProductVis(targetSelector, dropdownSelector, baseTitleText,
-    titleSelector) {
+  function cmeProductVis(
+    targetSelector, dropdownSelector, baseTitleText,
+    titleSelector
+  ) {
     const target = $(targetSelector);
     const titleElement = $(titleSelector)[0];
     const w = target.width();
@@ -94,7 +96,8 @@ import * as d3 from 'd3';
       d3.event.stopPropagation();
     }
 
-    d3.json('/visualizations/cme-product-sectors/cme-product-sectors.json',
+    d3.json(
+      '/visualizations/cme-product-sectors/cme-product-sectors.json',
       (data) => {
         const root = d3.hierarchy(data)
           .eachBefore((d) => {
@@ -149,37 +152,35 @@ import * as d3 from 'd3';
           .attr('y', d => (d.y1 - d.y0) / 2.0)
           .style('opacity', d => opacityFunction(d));
 
-        $(dropdownSelector).each(
-          (idx, elem) => {
-            elem.addEventListener('click', () => {
-              let aggFunction;
-              switch (elem.target) {
-                case 'volume':
-                  aggFunction = volume;
-                  titleElement.innerText = `${baseTitleText} Volume`;
-                  break;
-                case 'open-interest':
-                  aggFunction = openInterest;
-                  titleElement.innerText = `${baseTitleText} Open Interest`;
-                  break;
-                default:
-                  aggFunction = volume;
-                  break;
-              }
-              treemap(root.sum(aggFunction));
-              const t = cell.transition()
-                .duration(750)
-                .attr('transform', d => `translate(${d.x0},${d.y0})`);
-              t.select('rect')
-                .attr('width', d => d.x1 - d.x0)
-                .attr('height', d => d.y1 - d.y0);
-              t.select('text')
-                .attr('x', d => (d.x1 - d.x0) / 2.0)
-                .attr('y', d => (d.y1 - d.y0) / 2.0)
-                .style('opacity', d => opacityFunction(d));
-            });
-          }
-        );
+        $(dropdownSelector).each((idx, elem) => {
+          elem.addEventListener('click', () => {
+            let aggFunction;
+            switch (elem.target) {
+              case 'volume':
+                aggFunction = volume;
+                titleElement.innerText = `${baseTitleText} Volume`;
+                break;
+              case 'open-interest':
+                aggFunction = openInterest;
+                titleElement.innerText = `${baseTitleText} Open Interest`;
+                break;
+              default:
+                aggFunction = volume;
+                break;
+            }
+            treemap(root.sum(aggFunction));
+            const t = cell.transition()
+              .duration(750)
+              .attr('transform', d => `translate(${d.x0},${d.y0})`);
+            t.select('rect')
+              .attr('width', d => d.x1 - d.x0)
+              .attr('height', d => d.y1 - d.y0);
+            t.select('text')
+              .attr('x', d => (d.x1 - d.x0) / 2.0)
+              .attr('y', d => (d.y1 - d.y0) / 2.0)
+              .style('opacity', d => opacityFunction(d));
+          });
+        });
 
         titleElement.innerText = `${baseTitleText} Volume`;
       }
@@ -191,13 +192,17 @@ import * as d3 from 'd3';
   const titleSelector = '#cme-product-sectors-title';
   if ($(targetSelector)) {
     const baseTitleText = $(titleSelector)[0].innerText;
-    cmeProductVis(targetSelector, dropdownSelector, baseTitleText,
-      titleSelector);
+    cmeProductVis(
+      targetSelector, dropdownSelector, baseTitleText,
+      titleSelector
+    );
     $(window).resize(() => {
-      cmeProductVis(targetSelector,
+      cmeProductVis(
+        targetSelector,
         dropdownSelector,
         baseTitleText,
-        titleSelector);
+        titleSelector
+      );
     });
   }
 })();
