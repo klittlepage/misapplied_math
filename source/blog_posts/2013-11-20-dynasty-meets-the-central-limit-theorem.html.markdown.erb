@@ -101,7 +101,7 @@ ggplot(df, aes(x = Ratio, fill = ..count..)) +
 <% end %>
 
 
-![Distribution of family sizes for a simulated single family population](2013-11-20-dynasty-meets-the-central-limit-theorem/single_family_pop_freq.png)
+<%= image_tag webpack_image_path('2013-11-20-dynasty-meets-the-central-limit-theorem/single_family_pop_freq.png'), alt: 'Distribution of family sizes for a simulated single family population' %>
 
 The red dashed line denotes the mean value -- .69 for my run of the simulation. Using the same set of sample data and treating it as one simulated population of 100,000 instead of 100,000 simulated populations of one family:
 
@@ -124,7 +124,7 @@ $$
 
 where <%= m %q{\psi} %> is the [Digamma function](https://en.wikipedia.org/wiki/Digamma_function) (the [derivation](https://mathoverflow.net/questions/17960/google-question-in-a-country-in-which-people-only-want-boys) is here). Plotting this function we see that it rapidly converges to a ratio of .5:
 
-![Expected ratio of boys to girls for a population of k individuals](2013-11-20-dynasty-meets-the-central-limit-theorem/true_proportion_ev.png)
+<%= image_tag webpack_image_path('2013-11-20-dynasty-meets-the-central-limit-theorem/true_proportion_ev.png'), alt: 'Expected ratio of boys to girls for a population of k individuals' %>
 
 We can run a quick simulation to confirm our results:
 
@@ -154,7 +154,7 @@ theme(plot.background = element_rect(fill = '#F1F1F1'),
 	ggtitle("Simulated and Exact Boy/Girl Ratio vs Population Size")
 <% end %>
 
-![Simulated ratio of boys to girls for a population of k individuals](2013-11-20-dynasty-meets-the-central-limit-theorem/sim_proportion_ev_one_pass.png)
+<%= image_tag webpack_image_path('2013-11-20-dynasty-meets-the-central-limit-theorem/sim_proportion_ev_one_pass.png'), alt: 'Simulated ratio of boys to girls for a population of k individuals' %>
 
 We see that our simulations are within a few percent of the theoretical and converge towards the true value as <%= m %q{n} %> becomes large. So far we're only looking at one simulated population. How do our results look if we average across many simulated populations?
 
@@ -204,6 +204,6 @@ theme(plot.background = element_rect(fill = '#F1F1F1'),
 	ggtitle("Simulated and Exact Boy/Girl Ratio vs Population Size")
 <% end %>
 
-![Distribution of family fizes for a multiple family population](2013-11-20-dynasty-meets-the-central-limit-theorem/sim_proportion_ev.png)
+<%= image_tag webpack_image_path('2013-11-20-dynasty-meets-the-central-limit-theorem/sim_proportion_ev.png'), alt: 'Distribution of family fizes for a multiple family population' %>
 
 The graph above depicts the empirical and exact population ratios, along with bands denoting variance between means for the simulated populations. As you can see, averaging across multiple simulated populations gives much faster convergence. The Central Limit Theorem works its magic once again, this time by smoothing out variation between our simulated populations. We can see that even for a single family population, with enough simulation passes the empirical result is almost indistinguishable from the analytical one. Pretty cool if you ask me.

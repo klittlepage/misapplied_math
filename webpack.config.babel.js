@@ -1,71 +1,80 @@
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ESLint = require('eslint/lib/formatters/checkstyle');
-const SassLint = require('sasslint-webpack-plugin');
+// require('babel-register');
+
+import webpack from 'webpack';
+import path from 'path';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ManifestPlugin from 'webpack-manifest-plugin';
+import ESLint from 'eslint/lib/formatters/checkstyle';
+import SassLint from 'sasslint-webpack-plugin';
+import WebpackAssetManifest from './webpack_plugins/asset_manifest';
 
 const outputPath = path.resolve('.tmp', 'dist', 'assets');
 const sourceMapIncludes = path.resolve('node_modules');
-
-const sassLoader = ExtractTextPlugin
-  .extract({ fallback: 'style-loader',
-    use: [`css-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
-      `sass-loader?sourceMap&includePaths[]=${sourceMapIncludes}`,
-      `postcss-loader?sourceMap&includePaths[]=${sourceMapIncludes}`],
-    publicPath: '/assets/' });
-
 const PROD = (process.env.MIDDLEMAN_ENV === 'production');
 const outputNameTemplate = PROD ? '[name]-[chunkhash].min' :
   '[name]-[chunkhash]';
 
 const buildPlugins = [
+  new CleanWebpackPlugin(outputPath),
   new ExtractTextPlugin(`${outputNameTemplate}.css`),
   new ManifestPlugin(),
-  new webpack.ProvidePlugin({ $: 'jquery',
-    jQuery: 'jquery',
-    'window.jQuery': 'jquery' }),
-  new CleanWebpackPlugin(outputPath),
   new SassLint({
     glob: 'source/stylesheets/*.s?(a|c)ss',
     ignorePlugins: ['extract-text-webpack-plugin'],
     failOnWarning: true,
     failOnError: true
   }),
-  new webpack.LoaderOptionsPlugin(
-    {
-      debug: true,
-      options: {
-        eslint: {
-          configFile: '.eslintrc',
-          failOnWarning: true,
-          failOnError: true,
-          fix: false,
-          outputReport: {
-            filePath: path.resolve('.tmp', 'checkstyle.xml'),
-            formatter: ESLint,
-          },
-        },
-      },
+  new WebpackAssetManifest()
+];
+
+const imageLoaders = [
+  {
+    loader: 'url-loader?[name]-[chunkhash].[ext]',
+    options: {
+      limit: 8192
     }
-  ),
+  }
 ];
 
 if (PROD) {
-  const uglify = new webpack.optimize.UglifyJsPlugin({ minimize: true,
+  const uglify = new webpack.optimize.UglifyJsPlugin({
+    minimize: true,
     sourceMap: true,
-    compress: { warnings: false } });
+    compress: { warnings: false }
+  });
   buildPlugins.push(uglify);
+
+  imageLoaders.push({
+    loader: 'image-webpack-loader',
+    options: {
+      gifsicle: {
+        interlaced: false,
+      },
+      optipng: {
+        optimizationLevel: 7,
+      },
+      pngquant: {
+        quality: '90-100',
+      },
+      mozjpeg: {
+        quality: 90
+      }
+    }
+  });
 }
 
 module.exports = {
+  cache: true,
+  devtool: 'source-map',
+
   entry: {
     site: [
       path.resolve('source', 'stylesheets', 'site.scss'),
       path.resolve('source', 'javascripts', 'site.js')
     ],
-    visualizations: path.resolve('source', 'javascripts', 'visualizations.js')
+    visualizations: path.resolve('source', 'javascripts', 'visualizations.js'),
+    assets: path.resolve('source', 'javascripts', 'assets.js')
   },
 
   output: {
@@ -77,12 +86,11 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: [
       'source',
+      'source/blog_posts',
+      'source/visualizations',
       'node_modules',
     ],
   },
-
-  cache: true,
-  devtool: 'source-map',
 
   module: {
     rules: [{
@@ -104,22 +112,48 @@ module.exports = {
           loader: 'eslint-loader',
           options: {
             emitWarning: true,
+            configFile: '.eslintrc',
+            failOnWarning: true,
+            failOnError: true,
+            fix: false,
+            outputReport: {
+              filePath: 'checkstyle.xml',
+              formatter: ESLint,
+            },
           }
         },
       ],
     }, {
-      test: /.*\.scss$/,
-      use: sassLoader
-    }, {
-      test: /\.(png|jpg|jpeg)$/,
-      use: [
-        {
-          loader: 'url-loader?[name]-[chunkhash].[ext]',
-          options: {
-            limit: 8192
+      test: /\.(scss|sass)$/,
+      use: ExtractTextPlugin.extract({
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: false,
+              includePaths: [sourceMapIncludes],
+              importLoaders: 2
+            }
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: false,
+              includePaths: [sourceMapIncludes],
+              // eslint-disable-next-line global-require
+              plugins: () => [require('autoprefixer')]
+            }
+          }, {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: false,
+              includePaths: [sourceMapIncludes]
+            }
           }
-        }
-      ]
+        ]
+      })
+    }, {
+      test: /\.(gif|png|jpe?g|svg)$/,
+      use: imageLoaders
     }, {
       test: /\.ico$/,
       use: [

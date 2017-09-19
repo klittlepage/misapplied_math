@@ -348,7 +348,7 @@ From the vectorization report we also see that the loop in parseNaive() was unro
 
 The results weren't compelling but the "best implementation" using AVX did offer a 5% speedup over the next runner up - our hand unrolled loop. Averaging across 10,000,000 iterations yields:
 
-![Time Spent Parsing - Nanoseconds per Message](2013-12-10-accelerated-fix-processing-via-avx2-vector-instructions/parsing-nanos-msg.png)
+<%= image_tag webpack_image_path('2013-12-10-accelerated-fix-processing-via-avx2-vector-instructions/parsing-nanos-msg.png'), alt: 'Time Spent Parsing - Nanoseconds per Message' %>
 
 There's a good explanation for these lackluster results. On the SSE front STTNI (String and Text New Instructions) instructions have a very high instruction latency. PCMPESTRI, emitted by _mm_cmpistri takes eight cycles to return a result. The STTNI instruction set offers a rich set of operations via its control flag but because our query is so basic the instruction's overhead isn't worth it. Worst of all, "needles" are very dense in our "haystack" so we end up duplicating vector loads. STTNI instructions perform very well on general use cases or more complicated queries, which is why functions such as strchr() and strlen() in [glibc](https://github.com/andikleen/glibc/blob/b0399147730d478ae45160051a8a0f00f91ef965/sysdeps/x86_64/multiarch/strchr.S) use them.
 
@@ -449,7 +449,7 @@ inline int avxChecksumV2(const char * const target, size_t targetLength) {
 
 And the results: 
 
-![Time Spent Checksumming - Nanoseconds per Message](2013-12-10-accelerated-fix-processing-via-avx2-vector-instructions/checksum-nanos-msg.png)
+<%= image_tag webpack_image_path('2013-12-10-accelerated-fix-processing-via-avx2-vector-instructions/checksum-nanos-msg.png'), alt: 'Time Spent Checksumming - Nanoseconds per Message' %>
 
 The first thing we note is that GCC is pretty good at its job. With vectorization enabled we get code that's a dead tie with our first hand optimized implementation. Without vectorization enabled it's no contest. And this time around, we beat GCC's vectorized code by a factor of two. 
 

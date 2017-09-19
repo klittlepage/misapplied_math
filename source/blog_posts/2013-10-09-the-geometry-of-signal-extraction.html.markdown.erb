@@ -157,7 +157,7 @@ ggplot(df, aes(x = x, y = y)) +
 	ggtitle("2D Normal Density")
 <% end %>
 
-![2D Gaussian Density](2013-10-09-the-geometry-of-signal-extraction/normal-density-2d.png)
+<%= image_tag webpack_image_path('2013-10-09-the-geometry-of-signal-extraction/normal-density-2d.png'), alt: '2D Gaussian Density' %>
 
 The density above resulted from the sum of two independent normal distributions <%= m %q{N(1, 1)} %> and <%= m %q{N(2, 2)} %>. As such, it's centered at <%= m %q{(1, 2)} %>, and elongated along the <%= m %q{y} %> axis. Plugging in the parameters of our distributions gives <%= m %q{\alpha = .4} %> and <%= m %q{\beta = .2} %>. Fitting the simulation data we find that our equation holds:
 

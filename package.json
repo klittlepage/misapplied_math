@@ -4,9 +4,11 @@
   "description": "Misapplied Math Blog",
   "repository": "github:klittlepage/misapplied_math",
   "scripts": {
+    "start": "bundle exec middleman serve",
     "check_links": "./node_modules/.bin/blc http://localhost:8000 -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'",
     "check_links_prod": "./node_modules/.bin/blc https://www.klittlepage.com -ro --exclude 'https://linkedin.com/*' --exclude 'https://www.quora.com/*'",
-    "lint_webpack": "./node_modules/.bin/eslint -c ./node_modules/eslint-config-airbnb-base/.eslintrc --fix webpack.config.js"
+    "lint_webpack": "./node_modules/.bin/eslint -c ./node_modules/eslint-config-airbnb-base/.eslintrc --fix webpack.config.babel.js",
+    "build_release": "MIDDLEMAN_ENV=prod bundle exec middleman build"
   },
   "author": "Kelly Littlepage",
   "license": "ISC",
@@ -21,8 +23,10 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
     "broken-link-checker": "^0.7.6",
     "clean-webpack-plugin": "^0.1.16",
     "core-decorators": "^0.20.0",
@@ -41,6 +45,7 @@
     "fg-loadcss": "^1.3.1",
     "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
+    "image-webpack-loader": "^3.4.2",
     "imports-loader": "^0.7.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",

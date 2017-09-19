@@ -1,4 +1,5 @@
 /* eslint-env browser */
+import 'jquery';
 import 'javascripts/vendor/bootstrap/bootstrap/collapse';
 import 'javascripts/vendor/bootstrap/bootstrap/dropdown';
 

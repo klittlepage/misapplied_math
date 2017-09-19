@@ -17,7 +17,7 @@ description: "A discussion of De Bruijn graphs and an application of De Bruijn s
 
 [De Bruijn graphs](https://en.wikipedia.org/wiki/De_Bruijn_graph) are Eulerian, Hamiltonian digraphs with a few special properties. if we have an alphabet <%= m %q{\Sigma} %> with <%= m %q{m} %> symbols, the graph will have <%= m %q{m^n} %> vertices, where <%= m %q{n} %> is a free parameter. The vertex set is constructed such that every <%= m %q{n} %> character word formed by characters taken from the alphabet is represented by a single vertex. The edge set is constructed in a fashion that encodes "overlap" between the words. De Bruijn sequences are the [Hamiltonian cycles](https://en.wikipedia.org/wiki/Hamiltonian_path) of the graph.
 
-![DeBruijn Digraph](2013-12-21-twelve-days-2013-de-bruijn-sequences/DeBruijn-digraph.png)
+<%= image_tag webpack_image_path('2013-12-21-twelve-days-2013-de-bruijn-sequences/DeBruijn-digraph.png'), alt: 'DeBruijn Digraph' %>
 
 ## Why De Bruijn Sequences are Interesting
 

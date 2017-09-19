@@ -201,17 +201,17 @@ resulting in huge spikes in latency.
 
 As for the results:
 
-![Hash function execution times zoomed](2013-09-20-queuing-where-math-meets-cs/exec-times-zoomed-dist.png)
+<%= image_tag webpack_image_path('2013-09-20-queuing-where-math-meets-cs/exec-times-zoomed-dist.png'), alt: 'Hash function execution times zoomed' %>
 
 There are some minor peaks after the big one but the exponential drop off is 
 pronounced. It's a little more clear from the empirical cumulative distribution function:
 
-![Hash function ecdf](2013-09-20-queuing-where-math-meets-cs/ecdf-exec-times.png)
+<%= image_tag webpack_image_path('2013-09-20-queuing-where-math-meets-cs/ecdf-exec-times.png'), alt: 'Hash function ecdf' %>
 
 However, I neglected to mention that both of the images above are zoomed 
 way, way in. The distribution, in entirety looks like: 
 
-![Hash function execution times full](2013-09-20-queuing-where-math-meets-cs/exec-times-full-dist.png)
+<%= image_tag webpack_image_path('2013-09-20-queuing-where-math-meets-cs/exec-times-full-dist.png'), alt: 'Hash function execution times full' %>
 
 Ouch. There's the scheduler jitter that we were discussing before. The tail 
 on that graph is so far out that it's hardly worth showing. It's easier to 

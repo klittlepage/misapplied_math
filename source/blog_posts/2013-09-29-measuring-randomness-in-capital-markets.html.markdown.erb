@@ -113,7 +113,7 @@ ggplot(sp.arv20.df, aes(x = Date, y = ARV)) +
 	ggtitle("S&P 500 20 Day Absolute Realized Variation vs Time")
 <% end %>
 
-![20 day ARV vol](2013-09-29-measuring-randomness-in-capital-markets/20day-arv-vol.png)
+<%= image_tag webpack_image_path('2013-09-29-measuring-randomness-in-capital-markets/20day-arv-vol.png'), alt: '20 day ARV vol' %>
 
 Now let's look at entropy. Entropy is a property of a random variable, and as
 such there's no way to measure the entropy of data directly. However, if we
@@ -155,7 +155,7 @@ ggplot(sp.entropy20.df, aes(x = Date, y = Entropy)) +
 	ggtitle("S&P 500 Rolling 20 Day Shannon Entropy vs Time")
 <% end %>
 
-![20 day rolling entropy](2013-09-29-measuring-randomness-in-capital-markets/20day-entropy.png)
+<%= image_tag webpack_image_path('2013-09-29-measuring-randomness-in-capital-markets/20day-entropy.png'), alt: '20 day rolling entropy' %>
 
 Visually the two plots look very different. We see that most of the time <%= m %q{H(X)} %>
 is close to one (the mean is .96), indicating that our "coin" is fair and that

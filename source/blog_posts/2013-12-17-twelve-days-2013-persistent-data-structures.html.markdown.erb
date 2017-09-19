@@ -23,7 +23,7 @@ One of the simplest examples of a persistent data structure is a collection with
 
 Without too much work we can do a little better than copy-on-write for most use cases via [path copying](https://en.wikipedia.org/wiki/Persistent_data_structure#Path_Copying): 
 
-![Tree path copy](2013-12-17-twelve-days-2013-persistent-data-structures/path-copy.png)
+<%= image_tag webpack_image_path('2013-12-17-twelve-days-2013-persistent-data-structures/path-copy.png'), alt: 'Tree path copy' %>
 
 We start by structuring our collection as a *d-ary* tree (or a [trie](https://en.wikipedia.org/wiki/Trie) if ordering matters). When we need to mutate state we copy all nodes along the path containing the mutation. We then work backwards from the point of the change, fixing up references along the way so that everything along the mutated path holds a reference to the newly created node reflecting our insertion/deletion.
 

@@ -103,7 +103,7 @@ ggplot(df, aes(x = Return, fill = Month)) +
 	ggtitle("Bootstrapped Returns By Month")
 <% end %>
 
-![Bootstrapped Returns By Month](2013-08-22-tis-the-season-for-september-bearishness/monthly-return-bootstrap-dist.png)
+<%= image_tag webpack_image_path('2013-08-22-tis-the-season-for-september-bearishness/monthly-return-bootstrap-dist.png'), alt: 'Bootstrapped Returns By Month' %>
 
 The image above shows a bootstrap distribution for each calendar month, as well as the control. The control distribution is much tighter as there's 12 times more data, which by the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) should result in a distribution having <%= m %q{\sigma_\text{control} \approx \frac{\sigma}{\sqrt{12}}} %>.
 
@@ -154,7 +154,7 @@ cat(sprintf("p-value: %.4f\n",
 	sum(mean.diff.sampled > mean.diff.sep) / sample.count)) 
 <% end %>
 
-![Sample Permutation Distribution of Differences in Monthly Returns](2013-08-22-tis-the-season-for-september-bearishness/sep-perm-test.png)
+<%= image_tag webpack_image_path('2013-08-22-tis-the-season-for-september-bearishness/sep-perm-test.png'), alt: 'Sample Permutation Distribution of Differences in Monthly Returns' %>
 
 My p-value was <%= m %q{p = .0134} %> (your mileage will vary as this a random sample after all) - pretty statistically significant as a stand alone hypothesis. However, we still have a lurking issue with multiple comparisons. We cherry picked one month out of the calendar year -- September -- and we need to account for this bias. The [Bonferroni correction](https://en.wikipedia.org/wiki/Bonferroni_correction) is one approach, in which case we would need <%= m %q{\alpha = \frac{.05}{12} = .0042} %> if we were testing our hypothesis at the <%= m %q{\alpha = .05} %> level. Less formally our p-value is effectively *0.1608* -- not super compelling.
 
@@ -185,7 +185,7 @@ ggplot(return.bands, aes(x = Date, y = Return, ymin = Low, ymax = High)) +
 	ggtitle("Equity Curve for Short September Strategy w/ Oracle Bands")
 <% end %>
 
-![Equity Curve for Short September Strategy](2013-08-22-tis-the-season-for-september-bearishness/seasonality-eq-curve-envelope.png)
+<%= image_tag webpack_image_path('2013-08-22-tis-the-season-for-september-bearishness/seasonality-eq-curve-envelope.png'), alt: 'Equity Curve for Short September Strategy' %>
 
 The high and low bands show the return for the most bullish and bearish month in each year. It's easy to see that September tends to hug the bottom band but it looks pretty dodgy as a trade -- statistical significance does not a good trading strategy make.
 

@@ -21,33 +21,6 @@ config[:markdown_engine] = :kramdown
 config[:host] = ENV['MISAPPLIED_HOST']
 config[:asset_build_dir] = '.tmp/dist'
 
-helpers do
-  def host
-    config[:host]
-  end
-
-  def vis_preview(visualization, thumbnail = '')
-    base_path = URI(visualization.source_file)
-                .path.split('/')[-1].split(/(\S*?)(\.\S+)/)[1]
-    thumbnail = visualization.data['preview'] || 'preview.png'
-    File.join(base_path, thumbnail)
-  end
-
-  def prev_title(article)
-    article.article_previous.title
-  end
-
-  def next_title(article)
-    article.article_next.title
-  end
-
-  def webpack_asset_path(asset)
-    manifest = JSON.parse(File.read(File.join(config[:asset_build_dir],
-                                              'assets', 'manifest.json')))
-    File.join('assets', manifest[asset])
-  end
-end
-
 activate :syntax, line_numbers: true
 
 activate :blog do |blog|
@@ -104,5 +77,4 @@ end
 
 configure :build do
   activate :minify_html
-  activate :asset_hash, ignore: /\.(css|js|map)$/
 end
