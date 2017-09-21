@@ -22,12 +22,16 @@
 
     <% if current_page.data.title %>
     <title><%= "#{current_page.data.title} | #{data.site.author}" %></title>
+    <% elsif content_for?(:title) %>
+    <title><%= "#{yield_content :title} | #{data.site.author}" %></title>
     <% else %>
     <title><%= "#{data.site.title} | #{data.site.author}" %></title>
     <% end %>
 
     <% if current_page.data['description'] %>
     <meta name="description" content="<%= current_page.data['description'] %>" />
+    <% elsif content_for?(:description) %>
+    <meta name="description" content="<%= yield_content :description %>" />
     <% else %>
     <meta name="description" content="<%= data.site.description %>" />
     <% end %>

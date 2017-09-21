@@ -5,6 +5,9 @@ blog: blog
 layout: site_page
 ---
 
+<% content_for :title do %>Misapplied Math Category: <%= tagname %><% end %>
+<% content_for :description do %>Misapplied Math blog content tagged with category <%= tagname %><% end %>
+
 <div class="jumbotron">
   Category: <%= tagname %>
 </div>

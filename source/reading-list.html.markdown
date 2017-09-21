@@ -2,6 +2,8 @@
 pageable: false
 blog: blog
 layout: simple_page
+title: Reading List
+description: An incomplete and eclectic reading list covering sites that I actively follow, as well as a few sparsely updated classics
 ---
 
 ## Blogs (Math/Science/Data)
@@ -12,6 +14,18 @@ layout: simple_page
 
 [FiveThirtyEight](https://fivethirtyeight.com/)
 
+[OpenAI](https://openai.com/)
+
+[Deep Mind](https://deepmind.com/blog/)
+
+[Google Research](https://research.googleblog.com/)
+
+[Facebook Research](https://research.fb.com/publications/)
+
+[Baidu Research](http://research.baidu.com/baidu-tech-blog/)
+
+[Microsoft Research](https://www.microsoft.com/en-us/research/blog/)
+
 [Bad Astronomy](http://www.badastronomy.com/index.html)
 
 [The Polymath Blog](https://polymathprojects.org/)
@@ -19,6 +33,8 @@ layout: simple_page
 [Edwin Chen](http://blog.echen.me/)
 
 [R-bloggers](https://www.r-bloggers.com/)
+
+[a16z](https://a16z.com/tech-topics/)
 
 [XKCD](https://xkcd.com/)
 
