@@ -67,9 +67,9 @@
     <%= yield_content :sharing_script %>
     <% end %>
 
-    <%= javascript_include_tag webpack_asset_path('site.js'), async: true %>
+    <%= javascript_include_tag webpack_asset_path('site.js'), async: false %>
     <% if current_page.data['visualization'] %>
-    <%= javascript_include_tag webpack_asset_path('visualizations.js'), async: true %>
+    <%= javascript_include_tag webpack_asset_path('visualizations.js'), async: false %>
     <% end %>
   </body>
 </html>
