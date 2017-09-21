@@ -52,6 +52,9 @@
     <%= feed_tag :atom, URI.join(host, blog.options.prefix + '/', 'feed.xml').to_s, title: "Atom Feed" %>
 
     <%= partial 'partials/analytics' %>
+    <% if current_page.url == '/' %>
+    <%= partial 'partials/json_ld' %>
+    <% end %>
   </head>
   <body>
     <%= yield %>

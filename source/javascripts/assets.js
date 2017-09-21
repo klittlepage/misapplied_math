@@ -1,6 +1,8 @@
 /* eslint-env node */
 /* eslint-disable no-console */
 
+const profilePhoto = require('images/AG7A4331.jpg');
+
 const img000000 = require('2013-08-22-tis-the-season-for-september-bearishness/monthly-return-bootstrap-dist.png');
 const img000001 = require('2013-08-22-tis-the-season-for-september-bearishness/seasonality-eq-curve-envelope.png');
 const img000002 = require('2013-08-22-tis-the-season-for-september-bearishness/sep-perm-test.png');
@@ -24,6 +26,7 @@ const img000019 = require('2013-12-18-twelve-days-2013-sensor-fusion/kalman_trac
 const img000020 = require('2013-12-21-twelve-days-2013-de-bruijn-sequences/DeBruijn-digraph.png');
 
 const assets = {
+  'images/AG7A4331.jpg': profilePhoto,
   '2013-08-22-tis-the-season-for-september-bearishness/monthly-return-bootstrap-dist.png': img000000,
   '2013-08-22-tis-the-season-for-september-bearishness/seasonality-eq-curve-envelope.png': img000001,
   '2013-08-22-tis-the-season-for-september-bearishness/sep-perm-test.png': img000002,

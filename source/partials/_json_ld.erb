@@ -1,0 +1,39 @@
+<script type="application/ld+json">
+{
+  "@context": ["http://schema.org", {
+    "gender": {"@id": "schema:gender", "@type": "@vocab"}
+  }],
+  "@type": "Person",
+  "id": "<%= host %>",
+  "name": "Kelly Littlepage",
+  "familyName": "Littlepage",
+  "givenName": "Kelly",
+  "nationality": {
+    "@type": "Country",
+    "name": "United States of America",
+    "sameAs": "https://en.wikipedia.org/wiki/United_States"
+  },
+  "url": "<%= host %>",
+  "image": "<%= URI.join(host, webpack_image_path("images/AG7A4331.jpg")).to_s %>",
+  "jobTitle": "Founder of OneChronos",
+  "gender": "Male",
+  "description": "Kelly Littlepage is an American computer scientist, applied mathematician, and Fintech entrepreneur. Together with Stephen Johnson, he co-founded OneChronos.",
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "California Institute of Technology",
+      "sameAs": "https://en.wikipedia.org/wiki/California_Institute_of_Technology"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia Institute of Technology",
+      "sameAs": "https://en.wikipedia.org/wiki/Georgia_Institute_of_Technology"
+    }
+  ],
+  "affiliation": {
+    "@type": "Corporation",
+    "name": "OneChronos",
+    "sameAs":"https://www.onechronos.com"
+  }
+}
+</script>
